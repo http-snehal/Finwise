@@ -11,10 +11,14 @@ import BudgetGame from '../components/BudgetGame';
 import BadgeUnlock from '../components/BadgeUnlock';
 import SocraticDialogue from '../components/SocraticDialogue';
 import PortfolioBuilder from '../components/PortfolioBuilder';
+import LearningCards from '../components/LearningCards';
 import {
   STAGE_1_DIALOGUE,
   MODULE_2_STAGE_1_DIALOGUE,
   MODULE_2_STAGE_2_QUEST,
+  MODULE_3_STAGE_1_DIALOGUE,
+  MODULE_3_STAGE_2_CARDS,
+  MODULE_3_QUEST,
   STAGES,
 } from '../data/storyData';
 import './Quest.css';
@@ -76,6 +80,9 @@ export default function Quest() {
     } else if (globalIndex === 5 && !completedStages.includes(stageId)) {
       earnBadge('first-investor');
       setShowConfetti(true);
+    } else if (globalIndex === 8 && !completedStages.includes(stageId)) {
+      earnBadge('gst-guardian');
+      setShowConfetti(true);
     }
 
     // Sync to backend (use updated values locally for the sync)
@@ -112,6 +119,9 @@ export default function Quest() {
       case 'stage-4': return 'Stage 1: The Sleeping Money';
       case 'stage-5': return 'Stage 2: The Money Talk';
       case 'stage-6': return 'Stage 3: Build Your Portfolio';
+      case 'stage-7': return 'Stage 1: The Tax Shield';
+      case 'stage-8': return 'Stage 2: GST Mechanics';
+      case 'stage-9': return 'Stage 3: Tax Quest';
       default: return null;
     }
   };
@@ -221,6 +231,36 @@ export default function Quest() {
             </motion.div>
           )}
 
+          {/* Stage 7: The Tax Shield */}
+          {view === 'stage-7' && (
+            <motion.div key="stage-7" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <DialogueBox
+                dialogues={MODULE_3_STAGE_1_DIALOGUE}
+                onComplete={() => handleStageComplete(6)}
+              />
+            </motion.div>
+          )}
+
+          {/* Stage 8: GST Mechanics */}
+          {view === 'stage-8' && (
+            <motion.div key="stage-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <LearningCards
+                cards={MODULE_3_STAGE_2_CARDS}
+                onComplete={() => handleStageComplete(7)}
+              />
+            </motion.div>
+          )}
+
+          {/* Stage 9: Tax Quest */}
+          {view === 'stage-9' && (
+            <motion.div key="stage-9" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <SocraticDialogue
+                questData={MODULE_3_QUEST}
+                onComplete={() => handleStageComplete(8)}
+              />
+            </motion.div>
+          )}
+
           {/* Complete Screen */}
           {view === 'complete' && (
             <motion.div
@@ -241,7 +281,7 @@ export default function Quest() {
 
                 <h2 className="complete-title">Journey Complete!</h2>
                 <p className="complete-subtitle">
-                  Great work, {playerName}! You've mastered Payslip 101 and The Investor.
+                  Great work, {playerName}! You've mastered Payslip 101, The Investor, and The Tax Shield (GST).
                 </p>
 
                 <div className="complete-stats">
@@ -279,7 +319,7 @@ export default function Quest() {
                 <div className="complete-next">
                   <div className="complete-locked-module">
                     <Lock size={14} />
-                    <span>Module 3: The Tax Shield — Coming Soon</span>
+                    <span>Module 4: Market Dynamics — Coming Soon</span>
                   </div>
                   <button className="btn btn-primary" onClick={() => navigate('/')}>
                     Back to Home

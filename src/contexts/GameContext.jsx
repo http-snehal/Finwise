@@ -96,6 +96,13 @@ const BADGE_DEFINITIONS = {
     lucideIcon: 'flame',
     xpReward: 50,
   },
+  'gst-guardian': {
+    id: 'gst-guardian',
+    name: 'GST Guardian',
+    description: 'Mastered the mechanics of GST',
+    lucideIcon: 'shield',
+    xpReward: 300,
+  },
   'first-investor': {
     id: 'first-investor',
     name: 'First Investor',
