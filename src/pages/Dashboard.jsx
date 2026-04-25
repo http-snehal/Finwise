@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useGame } from '../contexts/GameContext';
-import { Trophy, Zap, LogOut, CheckCircle2, LayoutDashboard } from 'lucide-react';
+import { 
+  Trophy, Zap, CheckCircle2, LayoutDashboard, 
+  Pencil, X, Save, Target, Flame, Award, 
+  BookOpen, ArrowRight, Shield
+} from 'lucide-react';
 import { STAGES } from '../data/storyData';
 import HUD from '../components/HUD';
 import Sidebar from '../components/Sidebar';
@@ -13,6 +17,8 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [editMode, setEditMode] = useState(false);
+  const [editUsername, setEditUsername] = useState('');
 
   useEffect(() => {
     if (!user) {
@@ -23,13 +29,12 @@ export default function Dashboard() {
     const fetchProfile = async () => {
       try {
         const res = await fetch('/api/user/profile', {
-          headers: {
-            'Authorization': `Bearer ${user.token}`
-          }
+          headers: { 'Authorization': `Bearer ${user.token}` }
         });
         const data = await res.json();
         if (res.ok) {
           setProfile(data);
+          setEditUsername(data.username || '');
         } else {
           logout();
           navigate('/auth');
@@ -45,127 +50,262 @@ export default function Dashboard() {
   }, [user, navigate, logout]);
 
   if (loading) {
-    return <div className="dashboard-loading">Loading...</div>;
+    return (
+      <div className="dashboard-loading">
+        <div className="loading-spinner" />
+        <span>Loading your dashboard...</span>
+      </div>
+    );
   }
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
 
   const completedCount = profile?.completedStages?.length || 0;
   const totalStages = STAGES.length;
   const progressPct = Math.round((completedCount / totalStages) * 100);
+  const userXp = profile?.xp ?? xp;
+  const userBadges = profile?.badges?.length > 0 ? profile.badges : badges;
+  const level = Math.floor(userXp / 100) + 1;
+  const xpToNext = 100 - (userXp % 100);
+
+  // Module progress
+  const modules = [
+    { id: 1, name: 'Payslip 101', icon: <BookOpen size={16} />, color: '#10B981', stages: STAGES.filter(s => s.module === 1) },
+    { id: 2, name: 'The Investor', icon: <Target size={16} />, color: '#3B82F6', stages: STAGES.filter(s => s.module === 2) },
+    { id: 3, name: 'Tax Shield', icon: <Shield size={16} />, color: '#8B5CF6', stages: STAGES.filter(s => s.module === 3) },
+  ];
+
+  const handleSaveProfile = async () => {
+    if (!editUsername.trim()) return;
+    try {
+      const res = await fetch('/api/user/progress', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: JSON.stringify({ username: editUsername })
+      });
+      if (res.ok) {
+        setProfile(prev => ({ ...prev, username: editUsername }));
+        setEditMode(false);
+      }
+    } catch (err) {
+      console.error('Update failed', err);
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1, y: 0,
+      transition: { delay: i * 0.1, duration: 0.4, ease: [0.4, 0, 0.2, 1] }
+    })
+  };
 
   return (
     <div className="dashboard-page has-sidebar">
       <Sidebar />
       <HUD />
-      
+
       <div className="dashboard-container">
+        {/* Welcome Banner */}
         <motion.div 
-          className="dashboard-header"
+          className="welcome-banner"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="dh-title-row">
-            <LayoutDashboard size={24} className="neon-text" />
-            <h1>Player Dashboard</h1>
+          <div className="wb-left">
+            <span className="wb-greeting">Welcome back,</span>
+            <div className="wb-name-row">
+              {editMode ? (
+                <div className="wb-edit-row">
+                  <input 
+                    className="wb-edit-input" 
+                    value={editUsername} 
+                    onChange={(e) => setEditUsername(e.target.value)}
+                    autoFocus
+                  />
+                  <button className="wb-edit-btn save" onClick={handleSaveProfile}>
+                    <Save size={14} />
+                  </button>
+                  <button className="wb-edit-btn cancel" onClick={() => { setEditMode(false); setEditUsername(profile?.username || ''); }}>
+                    <X size={14} />
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <h1 className="wb-name">{profile?.username || playerName}</h1>
+                  <button className="wb-edit-trigger" onClick={() => setEditMode(true)}>
+                    <Pencil size={13} />
+                  </button>
+                </>
+              )}
+            </div>
+            <p className="wb-email">{profile?.email}</p>
           </div>
-          {/* Logout removed here as it is in the sidebar */}
+          <div className="wb-right">
+            <div className="wb-level-badge">
+              <Flame size={18} />
+              <span className="wb-level-num">Lvl {level}</span>
+            </div>
+            <div className="wb-xp-bar-wrapper">
+              <div className="wb-xp-bar">
+                <motion.div 
+                  className="wb-xp-fill"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${100 - (xpToNext)}%` }}
+                  transition={{ duration: 1, ease: 'easeOut' }}
+                />
+              </div>
+              <span className="wb-xp-text">{xpToNext} XP to Level {level + 1}</span>
+            </div>
+          </div>
         </motion.div>
 
-        <div className="dashboard-grid">
-          {/* Main Profile Card */}
-          <motion.div 
-            className="dashboard-card profile-card glass"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="profile-avatar">
-              {profile?.username?.charAt(0).toUpperCase()}
-            </div>
-            <div className="profile-info">
-              <h2>{profile?.username}</h2>
-              <p>{profile?.email}</p>
-            </div>
-            <div className="profile-stats">
-              <div className="p-stat">
-                <Zap size={20} className="neon-text" />
-                <span className="p-stat-val">{profile?.xp || xp}</span>
-                <span className="p-stat-label">Total XP</span>
+        {/* Stats Row */}
+        <div className="stats-row">
+          {[
+            { icon: <Zap size={20} />, value: userXp, label: 'Total XP', color: 'var(--neon-primary)', bg: 'rgba(16, 185, 129, 0.08)' },
+            { icon: <Trophy size={20} />, value: userBadges.length, label: 'Badges', color: 'var(--gold-primary)', bg: 'rgba(245, 158, 11, 0.08)' },
+            { icon: <CheckCircle2 size={20} />, value: `${completedCount}/${totalStages}`, label: 'Stages Done', color: '#3B82F6', bg: 'rgba(59, 130, 246, 0.08)' },
+            { icon: <Flame size={20} />, value: `${progressPct}%`, label: 'Progress', color: '#8B5CF6', bg: 'rgba(139, 92, 246, 0.08)' },
+          ].map((stat, i) => (
+            <motion.div 
+              key={stat.label}
+              className="stat-card glass"
+              custom={i}
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <div className="stat-icon-wrap" style={{ color: stat.color, background: stat.bg }}>
+                {stat.icon}
               </div>
-              <div className="p-stat">
-                <Trophy size={20} className="gold-text" />
-                <span className="p-stat-val">{profile?.badges?.length || badges.length}</span>
-                <span className="p-stat-label">Badges</span>
-              </div>
-            </div>
-          </motion.div>
+              <span className="stat-value" style={{ color: stat.color }}>{stat.value}</span>
+              <span className="stat-label">{stat.label}</span>
+            </motion.div>
+          ))}
+        </div>
 
-          {/* Progress Card */}
+        {/* Main Grid */}
+        <div className="dashboard-grid">
+          {/* Module Progress */}
           <motion.div 
-            className="dashboard-card progress-card glass"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
+            className="dashboard-card module-progress-card glass"
+            custom={4}
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
           >
-            <h3>Quest Progress</h3>
-            <div className="progress-radial-container">
-              <div className="progress-radial" style={{ '--pct': `${progressPct}%` }}>
-                <span className="progress-pct-text">{progressPct}%</span>
-              </div>
+            <div className="card-header">
+              <LayoutDashboard size={18} className="neon-text" />
+              <h3>Module Progress</h3>
             </div>
-            <p className="progress-text">
-              You have completed {completedCount} out of {totalStages} stages.
-            </p>
-            <button className="btn btn-primary" onClick={() => navigate('/quest')}>
-              Continue Quest
+            <div className="modules-list">
+              {modules.map((mod) => {
+                const completed = mod.stages.filter(s => profile?.completedStages?.includes(s.id)).length;
+                const total = mod.stages.length;
+                const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+                return (
+                  <div key={mod.id} className="module-row">
+                    <div className="module-icon" style={{ color: mod.color, background: `${mod.color}15` }}>
+                      {mod.icon}
+                    </div>
+                    <div className="module-details">
+                      <div className="module-name-row">
+                        <span className="module-name">{mod.name}</span>
+                        <span className="module-pct" style={{ color: mod.color }}>{pct}%</span>
+                      </div>
+                      <div className="module-bar">
+                        <motion.div 
+                          className="module-bar-fill" 
+                          style={{ background: mod.color }}
+                          initial={{ width: 0 }}
+                          animate={{ width: `${pct}%` }}
+                          transition={{ duration: 1, delay: 0.5 }}
+                        />
+                      </div>
+                      <span className="module-sub">{completed} of {total} stages</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <button className="btn btn-primary module-cta" onClick={() => navigate('/quest')}>
+              Continue Quest <ArrowRight size={16} />
             </button>
           </motion.div>
 
           {/* Badges Collection */}
           <motion.div 
             className="dashboard-card badges-card glass"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
+            custom={5}
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
           >
-            <h3>Badges Earned</h3>
+            <div className="card-header">
+              <Award size={18} className="gold-text" />
+              <h3>Badges Earned</h3>
+            </div>
             <div className="dashboard-badges-grid">
-              {badges.length > 0 ? badges.map(badge => (
-                <div key={badge.id} className="dash-badge-item glass-gold">
-                  <Trophy size={24} className="gold-text" />
+              {userBadges.length > 0 ? userBadges.map((badge, i) => (
+                <motion.div 
+                  key={badge.id}
+                  className="dash-badge-item"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.6 + i * 0.1, type: 'spring' }}
+                >
+                  <div className="badge-icon-wrap">
+                    <Trophy size={22} className="gold-text" />
+                  </div>
                   <span className="dash-badge-name">{badge.name}</span>
-                </div>
+                </motion.div>
               )) : (
-                <div className="no-badges">No badges earned yet. Start playing!</div>
+                <div className="no-badges">
+                  <Trophy size={32} style={{ opacity: 0.15 }} />
+                  <span>Complete quests to earn badges!</span>
+                </div>
               )}
             </div>
           </motion.div>
 
-          {/* Completed Stages List */}
+          {/* Completed Stages */}
           <motion.div 
             className="dashboard-card stages-card glass"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4 }}
+            custom={6}
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
           >
-            <h3>Completed Stages</h3>
+            <div className="card-header">
+              <CheckCircle2 size={18} className="neon-text" />
+              <h3>Completed Stages</h3>
+            </div>
             <div className="dash-stages-list">
               {profile?.completedStages?.length > 0 ? (
-                STAGES.filter(s => profile.completedStages.includes(s.id)).map(stage => (
-                  <div key={stage.id} className="dash-stage-item">
-                    <CheckCircle2 size={18} className="neon-text" />
+                STAGES.filter(s => profile.completedStages.includes(s.id)).map((stage, i) => (
+                  <motion.div 
+                    key={stage.id} 
+                    className="dash-stage-item"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.7 + i * 0.08 }}
+                  >
+                    <div className="stage-check">
+                      <CheckCircle2 size={16} />
+                    </div>
                     <div className="dash-stage-info">
                       <span className="dash-stage-title">{stage.title}</span>
-                      <span className="dash-stage-mod">Module {stage.module}</span>
+                      <span className="dash-stage-mod">Module {stage.module} · +{stage.xpReward} XP</span>
                     </div>
-                  </div>
+                  </motion.div>
                 ))
               ) : (
-                <div className="no-stages">No stages completed yet.</div>
+                <div className="no-stages">
+                  <BookOpen size={32} style={{ opacity: 0.15 }} />
+                  <span>Start your first quest to see progress here!</span>
+                </div>
               )}
             </div>
           </motion.div>
