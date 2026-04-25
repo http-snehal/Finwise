@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/api/auth/register", "destination": "/api/auth?action=register" },
+    { "source": "/api/auth/login", "destination": "/api/auth?action=login" },
+    { "source": "/api/user/profile", "destination": "/api/user?action=profile" },
+    { "source": "/api/user/progress", "destination": "/api/user?action=progress" },
+    { "source": "/api/gst/calculate", "destination": "/api/gst?action=calculate" },
+    { "source": "/api/gst/check-threshold", "destination": "/api/gst?action=check-threshold" },
+    { "source": "/api/gst/calculate-itc", "destination": "/api/gst?action=calculate-itc" },
+    { "source": "/api/gst/validate-gstin", "destination": "/api/gst?action=validate-gstin" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ]
+}
