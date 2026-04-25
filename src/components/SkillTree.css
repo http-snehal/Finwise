@@ -67,7 +67,7 @@
 }
 
 .tree-node:hover:not(:disabled) {
-  border-color: rgba(0, 212, 255, 0.2);
+  border-color: color-mix(in srgb, var(--neon-primary) 20%, transparent);
   transform: translateX(4px);
 }
 
@@ -160,8 +160,8 @@
 
 .node-type-badge.quest {
   color: var(--neon-primary);
-  background: rgba(0, 212, 255, 0.1);
-  border: 1px solid rgba(0, 212, 255, 0.15);
+  background: color-mix(in srgb, var(--neon-primary) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--neon-primary) 15%, transparent);
 }
 
 .node-type-badge.quiz {

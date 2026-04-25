@@ -88,8 +88,8 @@ export default function Landing() {
           </motion.div>
           
           <h1 className="hero-title">
-            <span className="hero-title-line">Wealth</span>
-            <span className="hero-title-line hero-title-accent">Quest</span>
+            <span className="hero-title-line">Fin</span>
+            <span className="hero-title-line hero-title-accent">wise</span>
           </h1>
           
           <motion.p
@@ -99,7 +99,7 @@ export default function Landing() {
             transition={{ delay: 0.4 }}
           >
             <Coins size={18} className="hero-tagline-icon" />
-            Duolingo for Money
+            Master Your Finances
           </motion.p>
           
           <motion.p
@@ -108,9 +108,9 @@ export default function Landing() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            Signed for <span className="highlight-ctc">₹8 LPA</span> but got <span className="highlight-inhand">₹52,000</span> in-hand?
+            Master Your Money, One Quest at a Time.
             <br />
-            Understand your payslip in 10 minutes — and actually enjoy it.
+            The gamified way for India's first-jobbers to decode taxes, master investments, and build real wealth. Built for the modern Indian professional.
           </motion.p>
           
           <motion.div
@@ -233,7 +233,7 @@ export default function Landing() {
       
       {/* How It Works */}
       <section className="how-section">
-        <h2 className="section-heading">How WealthQuest Works</h2>
+        <h2 className="section-heading">How Finwise Works</h2>
         <div className="how-steps">
           {[
             { step: '01', title: 'Start Your Story', desc: 'Experience getting your first job offer — ₹8 LPA!', icon: Clapperboard },

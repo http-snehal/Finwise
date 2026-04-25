@@ -74,7 +74,7 @@
   gap: 4px;
 }
 
-.bq-needs { width: 50%; background: #3B82F6; }
+.bq-needs { width: 50%; background: #059669; }
 .bq-wants { width: 30%; background: #F59E0B; }
 .bq-saves { width: 20%; background: #10B981; }
 
@@ -96,7 +96,7 @@
 /* Question card */
 .bq-question-card {
   background: var(--bg-card);
-  border: 1px solid rgba(0, 212, 255, 0.08);
+  border: 1px solid color-mix(in srgb, var(--neon-primary) 15%, transparent);
   border-radius: var(--radius-lg);
   padding: 20px;
   margin-bottom: 16px;
@@ -107,8 +107,8 @@
   align-items: center;
   gap: 5px;
   padding: 4px 12px;
-  background: rgba(0, 212, 255, 0.08);
-  border: 1px solid rgba(0, 212, 255, 0.12);
+  background: color-mix(in srgb, var(--neon-primary) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--neon-primary) 12%, transparent);
   border-radius: var(--radius-full);
   font-family: var(--font-display);
   font-size: 0.65rem;
@@ -152,7 +152,7 @@
 }
 
 .bq-option:hover:not(:disabled) {
-  border-color: rgba(0, 212, 255, 0.25);
+  border-color: color-mix(in srgb, var(--neon-primary) 25%, transparent);
   background: var(--bg-card);
 }
 

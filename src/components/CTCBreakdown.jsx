@@ -39,6 +39,8 @@ export default function CTCBreakdown({ onComplete }) {
   };
   
   const handleNext = () => {
+    if (isComplete) return;
+    
     setShowExplanation(false);
     
     if (currentLineIndex < PAYSLIP_LINES.length - 1) {

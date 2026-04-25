@@ -33,8 +33,13 @@ export default function BudgetGame({ onComplete }) {
     setTimeout(() => setShowExplanation(true), 500);
   };
   
+  const [isComplete, setIsComplete] = useState(false);
+
   const handleNext = () => {
+    if (isComplete) return;
+
     if (isLast) {
+      setIsComplete(true);
       // Evaluate and complete
       const score = Math.round((correctCount / BUDGET_QUIZ.length) * 100);
       if (score >= 60) {

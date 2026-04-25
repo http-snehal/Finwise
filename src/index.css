@@ -5,44 +5,44 @@
    with golden accent warmth
    ======================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 :root {
-  /* — Core Palette — */
-  --bg-deep: #060B18;
-  --bg-surface: #0C1425;
-  --bg-card: #111D35;
-  --bg-card-hover: #162545;
-  --bg-elevated: #1A2B4A;
+  /* — Core Palette (Light/Dashboard) — */
+  --bg-deep: #FFFFFF;
+  --bg-surface: #F8FAFC;
+  --bg-card: #EBF3FF;
+  --bg-card-hover: #DBEAFE;
+  --bg-elevated: #FFFFFF;
   
-  /* — Neon Blues — */
-  --neon-primary: #00D4FF;
-  --neon-secondary: #1A56DB;
-  --neon-glow: rgba(0, 212, 255, 0.3);
-  --neon-glow-strong: rgba(0, 212, 255, 0.6);
-  --blue-muted: #3B82F6;
+  /* — Primary Accents (Green) — */
+  --neon-primary: #059669;
+  --neon-secondary: #047857;
+  --neon-glow: rgba(5, 150, 105, 0.2);
+  --neon-glow-strong: rgba(5, 150, 105, 0.4);
+  --blue-muted: #34D399;
   
   /* — Gold Accents — */
-  --gold-primary: #FFB800;
-  --gold-glow: rgba(255, 184, 0, 0.3);
-  --gold-muted: #D4A017;
+  --gold-primary: #F59E0B;
+  --gold-glow: rgba(245, 158, 11, 0.2);
+  --gold-muted: #D97706;
   
   /* — Status Colors — */
-  --success: #00E676;
-  --success-glow: rgba(0, 230, 118, 0.3);
-  --danger: #FF4757;
-  --danger-glow: rgba(255, 71, 87, 0.3);
-  --warning: #FFA502;
+  --success: #10B981;
+  --success-glow: rgba(16, 185, 129, 0.2);
+  --danger: #EF4444;
+  --danger-glow: rgba(239, 68, 68, 0.2);
+  --warning: #F59E0B;
   
-  /* — Text — */
-  --text-primary: #E8F0FE;
-  --text-secondary: #8BA4C7;
-  --text-muted: #4A6380;
-  --text-bright: #FFFFFF;
+  /* — Text (Deep Navy) — */
+  --text-primary: #1E293B;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+  --text-bright: #0F172A;
   
   /* — Typography — */
-  --font-display: 'Chakra Petch', sans-serif;
-  --font-body: 'Outfit', sans-serif;
+  --font-display: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   
   /* — Spacing — */
@@ -62,6 +62,39 @@
   --radius-full: 100px;
   
   /* — Shadows — */
+  --shadow-neon: 0 4px 20px var(--neon-glow);
+  --shadow-gold: 0 4px 20px var(--gold-glow);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* — Dark Mode overrides (for game scenes) — */
+.dark-theme {
+  --bg-deep: #060B18;
+  --bg-surface: #0C1425;
+  --bg-card: #111D35;
+  --bg-card-hover: #162545;
+  --bg-elevated: #1A2B4A;
+  
+  --neon-primary: #00E676;
+  --neon-secondary: #00C853;
+  --neon-glow: rgba(0, 230, 118, 0.3);
+  --neon-glow-strong: rgba(0, 230, 118, 0.6);
+  --blue-muted: #69F0AE;
+  
+  --gold-primary: #FFB800;
+  --gold-glow: rgba(255, 184, 0, 0.3);
+  
+  --success: #00E676;
+  --success-glow: rgba(0, 230, 118, 0.3);
+  --danger: #FF4757;
+  --danger-glow: rgba(255, 71, 87, 0.3);
+  
+  --text-primary: #E8F0FE;
+  --text-secondary: #8BA4C7;
+  --text-muted: #4A6380;
+  --text-bright: #FFFFFF;
+  
   --shadow-neon: 0 0 20px var(--neon-glow), 0 0 40px rgba(0, 212, 255, 0.1);
   --shadow-gold: 0 0 20px var(--gold-glow), 0 0 40px rgba(255, 184, 0, 0.1);
   --shadow-card: 0 4px 30px rgba(0, 0, 0, 0.4);
@@ -140,28 +173,26 @@ body::before {
 
 /* — Selection — */
 ::selection {
-  background: rgba(0, 212, 255, 0.3);
+  background: var(--neon-glow-strong);
   color: var(--text-bright);
 }
 
 /* — Utility Classes — */
 .glass {
-  background: rgba(12, 20, 37, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 212, 255, 0.1);
+  background: var(--bg-card);
+  border: 1px solid color-mix(in srgb, var(--neon-primary) 15%, transparent);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .glass-gold {
-  background: rgba(12, 20, 37, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 184, 0, 0.15);
+  background: var(--bg-card);
+  border: 1px solid color-mix(in srgb, var(--gold-primary) 20%, transparent);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .neon-text {
   color: var(--neon-primary);
-  text-shadow: 0 0 10px var(--neon-glow), 0 0 30px rgba(0, 212, 255, 0.15);
+  text-shadow: 0 0 10px var(--neon-glow);
 }
 
 .gold-text {
@@ -177,11 +208,17 @@ body::before {
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
+    linear-gradient(rgba(5, 150, 105, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(5, 150, 105, 0.04) 1px, transparent 1px);
   background-size: 60px 60px;
   pointer-events: none;
   z-index: 0;
+}
+
+.dark-theme::before {
+  background-image: 
+    linear-gradient(rgba(0, 230, 118, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 230, 118, 0.02) 1px, transparent 1px);
 }
 
 /* — Keyframes — */

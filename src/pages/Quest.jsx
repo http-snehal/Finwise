@@ -11,8 +11,12 @@ import BudgetGame from '../components/BudgetGame';
 import BadgeUnlock from '../components/BadgeUnlock';
 import {
   STAGE_1_DIALOGUE,
+  MODULE_2_STAGE_1_DIALOGUE,
+  MODULE_2_STAGE_2_QUEST,
   STAGES,
 } from '../data/storyData';
+import SocraticDialogue from '../components/SocraticDialogue';
+import PortfolioBuilder from '../components/PortfolioBuilder';
 import './Quest.css';
 
 // Views: skill-tree | stage-1 | stage-2 | stage-3 | stage-4 | complete
@@ -37,10 +41,13 @@ export default function Quest() {
     const stageId = STAGES[stageIndex].id;
     const stageData = STAGES[stageIndex];
     
-    if (!completedStages.includes(stageId)) {
-      setCompletedStages(prev => [...prev, stageId]);
-      addXp(stageData.xpReward);
-    }
+    setCompletedStages(prev => {
+      if (!prev.includes(stageId)) {
+        addXp(stageData.xpReward);
+        return [...prev, stageId];
+      }
+      return prev;
+    });
     
     // Badge rewards
     if (stageIndex === 1) {
@@ -49,12 +56,18 @@ export default function Quest() {
       earnBadge('first-quest');
       earnBadge('streak-starter');
       setShowConfetti(true);
+    } else if (stageIndex === 5) {
+      earnBadge('first-investor');
+      setShowConfetti(true);
     }
     
-    // Advance active stage
-    if (stageIndex === activeStage) {
-      setActiveStage(prev => Math.min(prev + 1, STAGES.length));
-    }
+    // Advance active stage safely checking prev
+    setActiveStage(prev => {
+      if (prev === stageIndex) {
+        return Math.min(prev + 1, STAGES.length);
+      }
+      return prev;
+    });
     
     // Return to skill tree (or go to complete)
     if (stageIndex >= STAGES.length - 1) {
@@ -62,7 +75,7 @@ export default function Quest() {
     } else {
       setView('skill-tree');
     }
-  }, [completedStages, activeStage, addXp, earnBadge]);
+  }, [addXp, earnBadge]);
   
   const handleBudgetComplete = useCallback((result) => {
     setBudgetScore(result?.score || 0);
@@ -74,6 +87,9 @@ export default function Quest() {
       case 'stage-1': return 'Stage 1: The Story Begins';
       case 'stage-2': return 'Stage 2: Payslip Detective';
       case 'stage-3': return 'Stage 3: Budget Battle';
+      case 'stage-4': return 'Stage 1: The Sleeping Money';
+      case 'stage-5': return 'Stage 2: The Money Talk';
+      case 'stage-6': return 'Stage 3: Build Your Portfolio';
       default: return null;
     }
   };
@@ -95,8 +111,7 @@ export default function Quest() {
               style={{
                 left: `${Math.random() * 100}%`,
                 animationDuration: `${2 + Math.random() * 3}s`,
-                animationDelay: `${Math.random() * 2}s`,
-                background: ['#FFB800', '#00D4FF', '#FF4757', '#00E676', '#3B82F6'][i % 5],
+                background: ['#F59E0B', '#059669', '#EF4444', '#10B981', '#34D399'][i % 5],
                 width: `${6 + Math.random() * 8}px`,
                 height: `${6 + Math.random() * 8}px`,
               }}
@@ -157,6 +172,33 @@ export default function Quest() {
             </motion.div>
           )}
           
+          {/* Stage 4: The Sleeping Money */}
+          {view === 'stage-4' && (
+            <motion.div key="stage-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <DialogueBox
+                dialogues={MODULE_2_STAGE_1_DIALOGUE}
+                onComplete={() => handleStageComplete(3)}
+              />
+            </motion.div>
+          )}
+
+          {/* Stage 5: The Money Talk */}
+          {view === 'stage-5' && (
+            <motion.div key="stage-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <SocraticDialogue
+                questData={MODULE_2_STAGE_2_QUEST}
+                onComplete={() => handleStageComplete(4)}
+              />
+            </motion.div>
+          )}
+
+          {/* Stage 6: Build Your Portfolio */}
+          {view === 'stage-6' && (
+            <motion.div key="stage-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <PortfolioBuilder onComplete={() => handleStageComplete(5)} />
+            </motion.div>
+          )}
+          
           {/* Complete Screen */}
           {view === 'complete' && (
             <motion.div
@@ -175,9 +217,9 @@ export default function Quest() {
                   <Trophy size={64} className="complete-trophy-icon" />
                 </motion.div>
                 
-                <h2 className="complete-title">Module Complete!</h2>
+                <h2 className="complete-title">Journey Complete!</h2>
                 <p className="complete-subtitle">
-                  Great work, {playerName}! You've mastered Payslip 101.
+                  Great work, {playerName}! You've mastered Payslip 101 and The Investor.
                 </p>
                 
                 <div className="complete-stats">
@@ -215,7 +257,7 @@ export default function Quest() {
                 <div className="complete-next">
                   <div className="complete-locked-module">
                     <Lock size={14} />
-                    <span>Module 2: The Tax Shield — Coming Soon</span>
+                    <span>Module 3: The Tax Shield — Coming Soon</span>
                   </div>
                   <button className="btn btn-primary" onClick={() => navigate('/')}>
                     Back to Home

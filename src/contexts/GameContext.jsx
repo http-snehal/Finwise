@@ -92,6 +92,13 @@ const BADGE_DEFINITIONS = {
     lucideIcon: 'flame',
     xpReward: 50,
   },
+  'first-investor': {
+    id: 'first-investor',
+    name: 'First Investor',
+    description: 'Completed the Investor module and built your first portfolio',
+    lucideIcon: 'trending-up',
+    xpReward: 300,
+  },
 };
 
 function gameReducer(state, action) {
