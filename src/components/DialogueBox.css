@@ -245,16 +245,148 @@
 }
 
 /* Mood-specific accents */
+
+/* villain-entry: red flash, border lights up */
 .mood-villain-entry .dialogue-bottom-panel {
-  border-color: rgba(255, 71, 87, 0.2);
+  border-color: rgba(255, 71, 87, 0.4);
+  box-shadow: 0 0 24px rgba(255, 71, 87, 0.25);
+  animation: villain-flash 0.5s ease-out;
 }
 .mood-villain-entry .dialogue-bottom-panel::before {
   background: linear-gradient(90deg, transparent, #FF4757, transparent);
+  opacity: 0.8;
 }
 
+/* villain: persistent red tint */
+.mood-villain .dialogue-bottom-panel {
+  border-color: rgba(255, 71, 87, 0.25);
+  box-shadow: 0 0 14px rgba(255, 71, 87, 0.15);
+}
+.mood-villain .dialogue-bottom-panel::before {
+  background: linear-gradient(90deg, transparent, #FF4757, transparent);
+  opacity: 0.5;
+}
+
+/* warm/mentor: gold glow */
 .mood-warm .dialogue-bottom-panel {
-  border-color: rgba(255, 184, 0, 0.15);
+  border-color: rgba(255, 184, 0, 0.2);
 }
 .mood-warm .dialogue-bottom-panel::before {
-  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+  background: linear-gradient(90deg, transparent, #FFB800, transparent);
+  opacity: 0.5;
+}
+
+/* excited / success opening */
+.mood-excited .dialogue-bottom-panel {
+  border-color: rgba(16, 185, 129, 0.25);
+}
+.mood-excited .dialogue-bottom-panel::before {
+  background: linear-gradient(90deg, transparent, #10B981, transparent);
+  opacity: 0.6;
+}
+
+/* ecstatic: bright green burst */
+.mood-ecstatic .dialogue-bottom-panel {
+  border-color: rgba(0, 230, 118, 0.3);
+  animation: ecstatic-pulse 0.6s ease-out;
+}
+.mood-ecstatic .dialogue-bottom-panel::before {
+  background: linear-gradient(90deg, transparent, #00E676, transparent);
+  opacity: 0.7;
+}
+
+/* confident: steady blue */
+.mood-confident .dialogue-bottom-panel {
+  border-color: rgba(59, 130, 246, 0.25);
+}
+.mood-confident .dialogue-bottom-panel::before {
+  background: linear-gradient(90deg, transparent, #3B82F6, transparent);
+  opacity: 0.5;
+}
+
+/* shocked: orange-red jolt */
+.mood-shocked .dialogue-bottom-panel {
+  border-color: rgba(239, 68, 68, 0.3);
+  animation: shock-jolt 0.4s ease-out;
+}
+.mood-shocked .dialogue-bottom-panel::before {
+  background: linear-gradient(90deg, transparent, #EF4444, transparent);
+  opacity: 0.6;
+}
+
+/* determined: strong blue-green */
+.mood-determined .dialogue-bottom-panel {
+  border-color: rgba(0, 212, 255, 0.3);
+  box-shadow: 0 0 16px rgba(0, 212, 255, 0.15);
+}
+.mood-determined .dialogue-bottom-panel::before {
+  background: linear-gradient(90deg, transparent, #00D4FF, transparent);
+  opacity: 0.7;
+}
+
+/* dramatic: purple tension */
+.mood-dramatic .dialogue-bottom-panel {
+  border-color: rgba(139, 92, 246, 0.25);
+}
+.mood-dramatic .dialogue-bottom-panel::before {
+  background: linear-gradient(90deg, transparent, #8B5CF6, transparent);
+  opacity: 0.5;
+}
+
+/* suspense: pulsing dark */
+.mood-suspense .dialogue-bottom-panel {
+  border-color: rgba(100, 116, 139, 0.3);
+  animation: suspense-pulse 1.2s ease-in-out infinite;
+}
+.mood-suspense .dialogue-bottom-panel::before {
+  background: linear-gradient(90deg, transparent, #64748B, transparent);
+  opacity: 0.4;
+}
+
+/* reveal: bright neon pop */
+.mood-reveal .dialogue-bottom-panel {
+  border-color: rgba(0, 230, 118, 0.4);
+  animation: ecstatic-pulse 0.5s ease-out;
+}
+.mood-reveal .dialogue-bottom-panel::before {
+  background: linear-gradient(90deg, transparent, #00E676, transparent);
+  opacity: 0.8;
+}
+
+/* confused */
+.mood-confused .dialogue-bottom-panel {
+  border-color: rgba(251, 191, 36, 0.2);
+}
+.mood-confused .dialogue-bottom-panel::before {
+  background: linear-gradient(90deg, transparent, #FBBF24, transparent);
+  opacity: 0.4;
+}
+
+/* ── Keyframes ── */
+
+@keyframes villain-flash {
+  0%   { box-shadow: 0 0 0px rgba(255, 71, 87, 0); background: rgba(255,71,87,0.08); }
+  40%  { box-shadow: 0 0 40px rgba(255, 71, 87, 0.5); background: rgba(255,71,87,0.12); }
+  100% { box-shadow: 0 0 24px rgba(255, 71, 87, 0.25); background: var(--bg-card); }
+}
+
+@keyframes ecstatic-pulse {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.015); }
+  60%  { transform: scale(0.995); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shock-jolt {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-6px); }
+  40%  { transform: translateX(5px); }
+  60%  { transform: translateX(-3px); }
+  80%  { transform: translateX(2px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes suspense-pulse {
+  0%, 100% { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  50%       { box-shadow: 0 4px 20px rgba(100,116,139,0.2); }
 }

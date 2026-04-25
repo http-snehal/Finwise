@@ -270,47 +270,160 @@ export const BUDGET_QUIZ = [
 // ===========================
 export const STAGE_4_DIALOGUE = [
   {
+    character: 'narrator',
+    text: "One month later. Salary credited. Budget sorted. ₹8,000 saved. 🎉",
+    mood: 'excited',
+    audio: 'success',
+    highlight: '₹8,000 saved!',
+  },
+  {
+    character: 'player',
+    text: "Boom! Look at me go. I'm basically a financial genius.",
+    mood: 'ecstatic',
+    audio: 'pop',
+  },
+  {
     character: 'laxmi',
-    text: "You saved ₹8,000 this month. Great. But it's just sitting there.",
+    text: "Ha! Love the energy. But... where exactly did you put that ₹8,000?",
     mood: 'warm',
     audio: 'mentor',
   },
   {
     character: 'player',
-    text: "Isn't saving money... good?",
-    mood: 'confused',
+    text: "Uh... it's in my savings account? Safe and cozy.",
+    mood: 'confident',
     audio: 'pop',
   },
   {
     character: 'laxmi',
-    text: "Saving and investing are not the same thing.",
-    mood: 'warm',
-    audio: 'mentor',
-  },
-  {
-    character: 'iqbal',
-    text: "Every year I make everything 6% more expensive. Your sleeping money? I eat it slowly.",
-    mood: 'villain-entry',
-    audio: 'villain',
-  },
-
-  {
-    character: 'laxmi',
-    text: "Iqbal is right. If your money isn't growing, inflation is quietly destroying its value.",
+    text: "Safe, yes. But not cozy. Right now, it's just... sleeping.",
     mood: 'dramatic',
     audio: 'mentor',
   },
   {
+    character: 'narrator',
+    text: "Meanwhile, across town... a shadowy figure smells money.",
+    mood: 'suspense',
+    audio: 'suspense',
+  },
+  {
+    character: 'iqbal',
+    text: "Mwahahaha! I am Inflation Iqbal. And I can smell your sleeping rupees from here. 😈",
+    mood: 'villain-entry',
+    audio: 'villain',
+    highlight: 'Inflation Iqbal appears!',
+  },
+  {
     character: 'player',
-    text: "So what do I do?",
+    text: "WHO ARE YOU?! And why do you look so satisfied??",
     mood: 'confused',
+    audio: 'error',
+  },
+  {
+    character: 'iqbal',
+    text: "Every year, I make everything 6% pricier. That coffee? Up. That rent? Up. Your pizza? Way up.",
+    mood: 'villain',
+    audio: 'villain',
+    highlight: '6% inflation every year',
+  },
+  {
+    character: 'iqbal',
+    text: "Your ₹8,000 sitting idle? It can buy LESS next year. I eat it slowly. Nom nom. 😋",
+    mood: 'villain',
+    audio: 'villain',
+  },
+  {
+    character: 'player',
+    text: "That's... horrifying. So saving in a bank is useless?!",
+    mood: 'shocked',
+    audio: 'error',
+  },
+  {
+    character: 'laxmi',
+    text: "Not useless — but not enough! A savings account gives you 3-4%. Iqbal grows at 6%. Do the math.",
+    mood: 'dramatic',
+    audio: 'mentor',
+    highlight: '3-4% vs 6% inflation 😬',
+  },
+  {
+    character: 'iqbal',
+    text: "You're LOSING money while feeling safe. Classic rookie move. 🤣",
+    mood: 'villain',
+    audio: 'villain',
+  },
+  {
+    character: 'player',
+    text: "Okay Iqbal, you're officially my nemesis. Laxmi — what do I DO?",
+    mood: 'determined',
     audio: 'pop',
   },
   {
     character: 'laxmi',
-    text: "You have to put your money to work. Let's look at your options.",
-    mood: 'warm',
+    text: "You put your money to WORK! Let it grow faster than Iqbal can eat it.",
+    mood: 'excited',
     audio: 'mentor',
+  },
+  {
+    character: 'laxmi',
+    text: "Welcome to Investing. There are vehicles — from bicycles to rockets. 🚀 Let's explore them!",
+    mood: 'warm',
+    audio: 'chime',
+    highlight: 'Let the investing journey begin!',
+  },
+  {
+    character: 'iqbal',
+    text: "Hmph. Fine. But I'll be watching, rookie.",
+    mood: 'villain',
+    audio: 'villain',
+  },
+];
+
+// Alias used by Quest.jsx
+export const MODULE_2_STAGE_1_DIALOGUE = STAGE_4_DIALOGUE;
+
+// ===========================
+// MODULE 2 STAGE 2: The Money Talk (SocraticDialogue Quiz)
+// ===========================
+export const MODULE_2_STAGE_2_QUEST = [
+  {
+    speaker: 'laxmi',
+    text: "Iqbal eats 6% of your money every year. Your savings account gives 3.5%. What's happening to your ₹8,000?",
+    options: [
+      { id: 'a', text: 'It is growing safely 🌱', correct: false, feedback: "Not quite! 3.5% growth minus 6% inflation = you're losing purchasing power every year." },
+      { id: 'b', text: "It's losing value slowly 📉", correct: true, feedback: "Exactly! Your money can buy LESS each year. That's why investing matters." },
+      { id: 'c', text: "It stays the same 🤷", correct: false, feedback: "It stays the same in rupees — but buys less every year. Inflation is sneaky!" },
+    ],
+    xpReward: 40,
+  },
+  {
+    speaker: 'laxmi',
+    text: "You want zero risk and guaranteed returns. Which is your best vehicle?",
+    options: [
+      { id: 'a', text: 'Index Fund 📈', correct: false, feedback: "Index funds fluctuate with the market. Not zero risk!" },
+      { id: 'b', text: 'Fixed Deposit (FD) 🏦', correct: true, feedback: "FDs are bank-guaranteed. Safe as a bicycle — steady but slow at 6–7%." },
+      { id: 'c', text: 'Mutual Fund 💼', correct: false, feedback: "Mutual funds carry market risk. Safe-ish, but not guaranteed!" },
+    ],
+    xpReward: 40,
+  },
+  {
+    speaker: 'iqbal',
+    text: "Mwahaha! You put ₹5,000 in an FD at 7%. I inflate at 6%. How much do you ACTUALLY gain?",
+    options: [
+      { id: 'a', text: '7% — full gain! 💪', correct: false, feedback: "Nope! I eat 6% of it. You only net about 1% real growth. Classic!" },
+      { id: 'b', text: "About 1% real gain 😅", correct: true, feedback: "Correct! 7% FD - 6% inflation = ~1% real return. FDs barely beat me." },
+      { id: 'c', text: 'You lose money 😱', correct: false, feedback: "Not quite — you gain a tiny bit, but barely. The FD wins by a whisker!" },
+    ],
+    xpReward: 50,
+  },
+  {
+    speaker: 'laxmi',
+    text: "You want to invest ₹500/month automatically without timing the market. What's perfect for you?",
+    options: [
+      { id: 'a', text: 'Buy stocks manually every month 📊', correct: false, feedback: "Manual stock-picking takes research and timing. Not beginner-friendly!" },
+      { id: 'b', text: 'Keep in savings account 🏧', correct: false, feedback: "3.5% won't beat Iqbal's 6% inflation. You need to do better!" },
+      { id: 'c', text: 'Start a SIP 🚀', correct: true, feedback: "SIP (Systematic Investment Plan) auto-invests fixed amounts monthly. Set it and forget it!" },
+    ],
+    xpReward: 50,
   },
 ];
 

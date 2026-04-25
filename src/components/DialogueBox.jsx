@@ -74,7 +74,23 @@ export default function DialogueBox({ dialogues, onComplete }) {
   const moodClass = current.mood || 'neutral';
   
   return (
-    <div className="dialogue-fullscreen" onClick={handleAdvance}>
+    <div className={`dialogue-fullscreen mood-${moodClass}`} onClick={handleAdvance}>
+      {/* Villain entry: fullscreen red flash */}
+      <AnimatePresence>
+        {current.mood === 'villain-entry' && (
+          <motion.div
+            key={`vflash-${currentIndex}`}
+            style={{
+              position: 'fixed', inset: 0, background: 'rgba(255,71,87,0.12)',
+              pointerEvents: 'none', zIndex: 48,
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{ duration: 0.6, times: [0, 0.3, 1] }}
+          />
+        )}
+      </AnimatePresence>
+
       {/* SMS notification card (for salary credit scene) */}
       <AnimatePresence>
         {current.isNotification && (
@@ -117,7 +133,7 @@ export default function DialogueBox({ dialogues, onComplete }) {
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
-          className={`dialogue-bottom-panel mood-${moodClass}`}
+          className="dialogue-bottom-panel"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}

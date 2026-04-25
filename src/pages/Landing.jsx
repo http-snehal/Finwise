@@ -1,199 +1,333 @@
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../contexts/GameContext';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
-  FileText, Gamepad2, Wallet, Trophy, Play, Swords,
-  Clapperboard, AlertCircle, Search, Dumbbell,
-  Code, PenTool, Briefcase, Coins, Zap, Heart,
-  LayoutDashboard
+  FileText, Gamepad2, Wallet, Trophy, Play, Coins, Heart,
+  Zap, Search, ArrowRight, BookOpen, TrendingUp, Shield,
+  Star, Lock, ChevronRight, CheckCircle, LayoutDashboard,
+  Users, BarChart2, Flame,
 } from 'lucide-react';
 import './Landing.css';
 
-const FEATURES = [
-  { icon: FileText, title: 'Payslip Decoded', desc: 'Understand CTC, TDS, EPF — through story, not formulas' },
-  { icon: Gamepad2, title: 'Learn by Playing', desc: 'RPG quests, not boring lectures. Every concept is a game' },
-  { icon: Wallet, title: 'Budget Like a Pro', desc: 'Master the 50/30/20 rule with interactive challenges' },
-  { icon: Trophy, title: 'Earn & Level Up', desc: 'XP, badges, streaks — show off your financial mastery' },
+// ── Data ────────────────────────────────────────────────────────────────────
+
+const TYPING_PHRASES = [
+  'Understand your payslip.',
+  'Beat inflation.',
+  'Master GST.',
+  'Build real wealth.',
 ];
 
-const TESTIMONIALS = [
-  { text: '"I finally understand why my in-hand is ₹52K and not ₹66K!"', name: 'Priya, SDE-1', icon: Code },
-  { text: '"Wish I had this when I got my first offer letter."', name: 'Rahul, Product Analyst', icon: Briefcase },
-  { text: '"The Tax-Man character is hilarious."', name: 'Ananya, UI Designer', icon: PenTool },
+const STATS = [
+  { value: '1.2 Cr+', label: 'First-time earners enter workforce every year' },
+  { value: '76%', label: 'Have zero financial plan when they start' },
+  { value: '₹14,667', label: 'Average salary lost to deductions nobody explained' },
 ];
+
+const FEATURES = [
+  { icon: BookOpen,   title: 'Story Engine',       desc: 'Live a financial story — not a lecture. Every lesson is a scene.' },
+  { icon: Search,     title: 'Payslip Detective',  desc: 'Unlock each payslip line by answering the right question.' },
+  { icon: Wallet,     title: 'Salary Quest',       desc: 'Master the 50/30/20 rule through real budget challenges.' },
+  { icon: Zap,        title: 'XP & Streaks',       desc: 'Earn XP, maintain streaks and stay financially sharp.' },
+  { icon: BarChart2,  title: 'Skill Tree',         desc: 'Unlock modules as you level up. Progress feels earned.' },
+  { icon: Users,      title: 'Mentor Cast',        desc: 'Laxmi, Tanmay and Iqbal guide — and challenge — you.' },
+];
+
+const HOW_STEPS = [
+  { step: '01', icon: Play,      title: 'Start Your Quest',   desc: 'Laxmi introduces your financial world. Your first salary just landed.' },
+  { step: '02', icon: Search,    title: 'Learn by Doing',     desc: 'Drag, discover, and play through real salary and tax scenarios.' },
+  { step: '03', icon: Trophy,    title: 'Level Up',           desc: 'Earn XP, unlock badges, and build habits that last a lifetime.' },
+];
+
+const MODULES = [
+  {
+    num: 1, icon: FileText, color: '#10B981',
+    title: 'The Paycheck',
+    tagline: 'Why is ₹8 LPA only ₹52K in hand?',
+    locked: false,
+  },
+  {
+    num: 2, icon: TrendingUp, color: '#3B82F6',
+    title: 'Investment',
+    tagline: 'Make your money beat inflation.',
+    locked: true,
+  },
+  {
+    num: 3, icon: Shield, color: '#8B5CF6',
+    title: 'GST',
+    tagline: "Every freelancer's nightmare, explained.",
+    locked: true,
+  },
+];
+
+const CHARACTERS = [
+  {
+    id: 'laxmi',
+    name: 'Laxmi',
+    role: 'Wise Mentor',
+    color: '#FFB800',
+    img: '/characters/laxmi.png',
+    bio: 'She\'s seen every financial mistake — and exactly how to fix them.',
+  },
+  {
+    id: 'tanmay',
+    name: 'Tax-Man Tanmay',
+    role: 'The Charming Villain',
+    color: '#FF4757',
+    img: '/characters/tanmay.png',
+    bio: 'He takes your money legally — unless you know his tricks.',
+  },
+  {
+    id: 'iqbal',
+    name: 'Inflation Iqbal',
+    role: 'The Silent Thief',
+    color: '#9C27B0',
+    img: '/characters/iqbal.png',
+    bio: "You can't see him — but he's shrinking your savings right now.",
+  },
+];
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+function TypingEffect({ phrases }) {
+  const [phraseIdx, setPhraseIdx] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [deleting, setDeleting] = useState(false);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    const phrase = phrases[phraseIdx];
+    if (!deleting && displayed.length < phrase.length) {
+      timerRef.current = setTimeout(() => setDisplayed(phrase.slice(0, displayed.length + 1)), 60);
+    } else if (!deleting && displayed.length === phrase.length) {
+      timerRef.current = setTimeout(() => setDeleting(true), 1800);
+    } else if (deleting && displayed.length > 0) {
+      timerRef.current = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 35);
+    } else if (deleting && displayed.length === 0) {
+      setDeleting(false);
+      setPhraseIdx((phraseIdx + 1) % phrases.length);
+    }
+    return () => clearTimeout(timerRef.current);
+  }, [displayed, deleting, phraseIdx, phrases]);
+
+  return (
+    <span className="typing-phrase">
+      {displayed}
+      <span className="typing-cursor-hero">|</span>
+    </span>
+  );
+}
+
+function XpFloater() {
+  return (
+    <div className="xp-floater-wrap" aria-hidden="true">
+      {[0, 1, 2].map(i => (
+        <motion.div
+          key={i}
+          className="xp-floater"
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: [0, 1, 0], y: -70 }}
+          transition={{ duration: 2.5, repeat: Infinity, delay: i * 1.2, ease: 'easeOut' }}
+        >
+          <Zap size={11} /> +{[50, 30, 40][i]} XP
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+function RupeeParticles() {
+  const SYMBOLS = ['₹', '₹', '◎', '₹', '◎', '₹', '◎', '₹', '₹', '◎', '₹', '◎'];
+  return (
+    <div className="rupee-particles" aria-hidden="true">
+      {SYMBOLS.map((sym, i) => (
+        <motion.span
+          key={i}
+          className="rupee-sym"
+          style={{ left: `${(i * 8.5) % 100}%`, animationDelay: `${i * 0.6}s` }}
+          animate={{ y: [0, -120, -240], opacity: [0, 0.09, 0] }}
+          transition={{ duration: 8 + i * 0.5, repeat: Infinity, delay: i * 0.8, ease: 'linear' }}
+        >
+          {sym}
+        </motion.span>
+      ))}
+    </div>
+  );
+}
+
+function AnimatedStat({ value, label, index }) {
+  const [count, setCount] = useState('0');
+  const ref = useRef(null);
+  const observed = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !observed.current) {
+        observed.current = true;
+        const num = parseFloat(value.replace(/[^0-9.]/g, ''));
+        const prefix = value.match(/^[^0-9]*/)?.[0] || '';
+        const suffix = value.match(/[^0-9.]+$/)?.[0] || '';
+        let start = 0;
+        const steps = 60;
+        const inc = num / steps;
+        let step = 0;
+        const timer = setInterval(() => {
+          step++;
+          start += inc;
+          if (step >= steps) { clearInterval(timer); setCount(value); }
+          else setCount(`${prefix}${num < 10 ? start.toFixed(1) : Math.floor(start)}${suffix}`);
+        }, 25);
+      }
+    }, { threshold: 0.5 });
+    if (el) observer.observe(el);
+    return () => observer.disconnect();
+  }, [value]);
+
+  return (
+    <motion.div
+      ref={ref}
+      className="stat-card"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.15 }}
+    >
+      <span className="stat-number">{count}</span>
+      <span className="stat-label">{label}</span>
+    </motion.div>
+  );
+}
+
+// ── Main Component ────────────────────────────────────────────────────────────
 
 export default function Landing() {
   const navigate = useNavigate();
-  const { setPlayerName, user } = useGame();
-  const [name, setName] = useState('');
-  const [showNameInput, setShowNameInput] = useState(false);
-  
-  const handleStart = () => {
-    if (!showNameInput) {
-      setShowNameInput(true);
-      return;
-    }
-    if (name.trim()) {
-      setPlayerName(name.trim());
-    }
-    navigate('/quest');
-  };
-  
+  const { user } = useGame();
+  const [showSticky, setShowSticky] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShowSticky(window.scrollY > window.innerHeight * 0.8);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const goStart = () => navigate(user ? '/dashboard' : '/auth');
+
   return (
     <div className="landing">
       <div className="grid-overlay" />
-      
-      {/* Floating particles — decorative dots instead of emoji */}
-      <div className="landing-particles">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="floating-dot"
-            style={{
-              left: `${10 + (i * 12) % 80}%`,
-              top: `${15 + (i * 17) % 70}%`,
-              background: ['var(--neon-primary)', 'var(--gold-primary)', 'var(--success)', 'var(--neon-secondary)'][i % 4],
-              width: `${4 + (i % 3) * 2}px`,
-              height: `${4 + (i % 3) * 2}px`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              opacity: [0.15, 0.4, 0.15],
-            }}
-            transition={{
-              duration: 4 + i * 0.7,
-              repeat: Infinity,
-              delay: i * 0.5,
-            }}
-          />
-        ))}
-      </div>
-      
-      {/* Hero Section */}
-      <section className="hero">
+      <RupeeParticles />
+
+      {/* ── Floating XP badges ── */}
+      <XpFloater />
+
+      {/* ═══════════════════════════════════════
+          1. HERO
+      ═══════════════════════════════════════ */}
+      <section className="hero" id="hero">
         <motion.div
           className="hero-content"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
         >
-          <motion.div
-            className="hero-badge"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-          >
+          <motion.div className="hero-badge" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}>
             <span className="hero-badge-dot" />
             Built for India's First Jobbers
           </motion.div>
-          
+
           <h1 className="hero-title">
             <span className="hero-title-line">Fin</span>
             <span className="hero-title-line hero-title-accent">wise</span>
           </h1>
-          
-          <motion.p
-            className="hero-tagline"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-          >
-            <Coins size={18} className="hero-tagline-icon" />
-            Master Your Finances
+
+          <motion.p className="hero-subtitle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
+            <TypingEffect phrases={TYPING_PHRASES} />
           </motion.p>
-          
-          <motion.p
-            className="hero-description"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            Master Your Money, One Quest at a Time.
-            <br />
-            The gamified way for India's first-jobbers to decode taxes, master investments, and build real wealth. Built for the modern Indian professional.
+
+          <motion.p className="hero-description" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
+            The gamified way for India's first jobbers to decode taxes, master investments, and build real wealth.
           </motion.p>
-          
-          <motion.div
-            className="hero-cta-area"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-          >
-            {user ? (
-              <button className="btn btn-primary hero-cta" onClick={() => navigate('/dashboard')} id="start-quest-btn">
-                <LayoutDashboard size={16} /> Go to Dashboard
-              </button>
-            ) : (
-              <button className="btn btn-primary hero-cta" onClick={() => navigate('/auth')} id="start-quest-btn">
-                <Play size={16} /> Get Started
-              </button>
-            )}
-            
-            <span className="hero-cta-subtext">
-              10 min adventure · 100% free
-            </span>
+
+          {/* Character preview strip */}
+          <motion.div className="char-preview-strip" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
+            <span className="char-preview-label">Your guides on this journey</span>
+            <div className="char-preview-avatars">
+              {CHARACTERS.map(c => (
+                <div key={c.id} className="char-preview-item">
+                  <div className="char-preview-circle" style={{ borderColor: c.color }}>
+                    <img src={c.img} alt={c.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                  </div>
+                  <span className="char-preview-name">{c.name.split(' ')[0]}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div className="hero-cta-area" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
+            <button className="btn btn-primary hero-cta glow-pulse" onClick={goStart} id="start-quest-btn">
+              {user ? <><LayoutDashboard size={16} /> Go to Dashboard</> : <><Play size={16} /> Start My Quest — It's Free</>}
+            </button>
+            <div className="hero-trust-badges">
+              <span className="trust-badge"><CheckCircle size={12} /> No credit card</span>
+              <span className="trust-badge"><CheckCircle size={12} /> 5 min to start</span>
+              <span className="trust-badge"><CheckCircle size={12} /> Built for India</span>
+            </div>
           </motion.div>
         </motion.div>
-        
+
         {/* Hero Visual */}
-        <motion.div
-          className="hero-visual"
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-        >
+        <motion.div className="hero-visual" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5, duration: 0.8 }}>
           <div className="hero-card-stack">
             <div className="hero-card hero-card-payslip">
               <div className="hc-header">
                 <span className="hc-company">TechNova Solutions</span>
                 <span className="hc-month">Payslip · April 2026</span>
               </div>
-              <div className="hc-row">
-                <span>Basic Salary</span>
-                <span className="hc-earn">₹26,667</span>
-              </div>
-              <div className="hc-row">
-                <span>HRA</span>
-                <span className="hc-earn">₹10,667</span>
-              </div>
+              <div className="hc-row"><span>Basic Salary</span><span className="hc-earn">₹26,667</span></div>
+              <div className="hc-row"><span>HRA</span><span className="hc-earn">₹10,667</span></div>
               <div className="hc-divider" />
-              <div className="hc-row">
-                <span>EPF</span>
-                <span className="hc-deduct">-₹3,200</span>
-              </div>
-              <div className="hc-row">
-                <span>TDS</span>
-                <span className="hc-deduct">-₹3,733</span>
-              </div>
+              <div className="hc-row"><span>EPF</span><span className="hc-deduct">-₹3,200</span></div>
+              <div className="hc-row"><span>TDS</span><span className="hc-deduct">-₹3,733</span></div>
               <div className="hc-divider" />
-              <div className="hc-row hc-total">
-                <span>Net Pay</span>
-                <span>₹52,000</span>
-              </div>
+              <div className="hc-row hc-total"><span>Net Pay</span><span>₹52,000</span></div>
             </div>
-            
-            <motion.div
-              className="hero-card hero-card-badge"
-              animate={{ rotate: [2, -2, 2] }}
-              transition={{ duration: 4, repeat: Infinity }}
-            >
+
+            <motion.div className="hero-card hero-card-badge" animate={{ rotate: [2, -2, 2] }} transition={{ duration: 4, repeat: Infinity }}>
               <Trophy size={24} className="hcb-icon" />
               <span className="hcb-text">Payslip Pro</span>
-              <div className="hcb-xp">
-                <Zap size={12} />
-                <span>+200 XP</span>
-              </div>
+              <div className="hcb-xp"><Zap size={12} /><span>+200 XP</span></div>
             </motion.div>
           </div>
         </motion.div>
       </section>
-      
-      {/* Features */}
-      <section className="features-section">
+
+      {/* ═══════════════════════════════════════
+          2. STATS BAR
+      ═══════════════════════════════════════ */}
+      <section className="stats-section" id="stats">
+        <div className="stats-row">
+          {STATS.map((s, i) => <AnimatedStat key={i} value={s.value} label={s.label} index={i} />)}
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════
+          3. FEATURES
+      ═══════════════════════════════════════ */}
+      <section className="features-section" id="features">
+        <motion.h2
+          className="section-heading"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Everything you need to master money
+        </motion.h2>
         <div className="features-grid">
-          {FEATURES.map((feature, i) => {
-            const Icon = feature.icon;
+          {FEATURES.map((f, i) => {
+            const Icon = f.icon;
             return (
               <motion.div
                 key={i}
@@ -201,108 +335,217 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ y: -4, borderColor: 'rgba(0, 212, 255, 0.3)' }}
+                transition={{ delay: i * 0.08 }}
+                whileHover={{ y: -6, boxShadow: '0 12px 40px rgba(26,86,219,0.2)' }}
               >
                 <div className="feature-icon-wrap">
                   <Icon size={22} />
                 </div>
-                <h3 className="feature-title">{feature.title}</h3>
-                <p className="feature-desc">{feature.desc}</p>
+                <h3 className="feature-title">{f.title}</h3>
+                <p className="feature-desc">{f.desc}</p>
               </motion.div>
             );
           })}
         </div>
       </section>
-      
-      {/* How It Works */}
-      <section className="how-section">
-        <h2 className="section-heading">How Finwise Works</h2>
-        <div className="how-steps">
-          {[
-            { step: '01', title: 'Start Your Story', desc: 'Experience getting your first job offer — ₹8 LPA!', icon: Clapperboard },
-            { step: '02', title: 'The Surprise', desc: 'Your payslip says ₹52,000. Wait, what happened?!', icon: AlertCircle },
-            { step: '03', title: 'Decode & Learn', desc: 'Discover CTC, TDS, EPF through interactive quests', icon: Search },
-            { step: '04', title: 'Master Your Money', desc: 'Budget your salary. Earn badges. Level up!', icon: Dumbbell },
-          ].map((item, i) => {
+
+      {/* ═══════════════════════════════════════
+          4. HOW IT WORKS — Horizontal timeline
+      ═══════════════════════════════════════ */}
+      <section className="how-section" id="how">
+        <motion.h2
+          className="section-heading"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          How Finwise Works
+        </motion.h2>
+        <div className="how-timeline">
+          {HOW_STEPS.map((item, i) => {
             const Icon = item.icon;
+            return (
+              <div key={i} className="how-timeline-item">
+                <motion.div
+                  className="how-step-card"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.2 }}
+                >
+                  <div className="how-step-num">{item.step}</div>
+                  <div className="how-step-icon-wrap">
+                    <Icon size={20} />
+                  </div>
+                  <h3 className="how-step-title">{item.title}</h3>
+                  <p className="how-step-desc">{item.desc}</p>
+                </motion.div>
+                {i < HOW_STEPS.length - 1 && (
+                  <div className="how-connector">
+                    <ChevronRight size={18} className="how-connector-icon" />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════
+          5. MODULE PREVIEW
+      ═══════════════════════════════════════ */}
+      <section className="modules-section" id="modules">
+        <motion.h2
+          className="section-heading"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          What's Inside WealthQuest
+        </motion.h2>
+        <div className="modules-scroll-row">
+          {MODULES.map((mod, i) => {
+            const Icon = mod.icon;
             return (
               <motion.div
                 key={i}
-                className="how-step"
-                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+                className={`module-card glass ${mod.locked ? 'module-locked' : ''}`}
+                initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15 }}
+                whileHover={!mod.locked ? { y: -4 } : {}}
               >
-                <div className="how-step-number">{item.step}</div>
-                <div className="how-step-content">
-                  <div className="how-step-icon-wrap">
-                    <Icon size={18} />
+                <div className="module-card-top">
+                  <div className="module-icon-wrap" style={{ background: `${mod.color}20`, borderColor: `${mod.color}40` }}>
+                    <Icon size={22} style={{ color: mod.color }} />
                   </div>
-                  <h3>{item.title}</h3>
-                  <p>{item.desc}</p>
+                  <span className="module-num">Module {mod.num}</span>
                 </div>
-                {i < 3 && <div className="how-step-connector" />}
+                <h3 className="module-title">{mod.title}</h3>
+                <p className="module-tagline">{mod.tagline}</p>
+                <div className="module-progress-bar">
+                  <div className="module-progress-fill" style={{ width: mod.locked ? '0%' : '0%', background: mod.color }} />
+                </div>
+                <button
+                  className={`module-cta-btn ${mod.locked ? 'module-btn-locked' : 'module-btn-start'}`}
+                  onClick={() => !mod.locked && navigate('/quest')}
+                  disabled={mod.locked}
+                >
+                  {mod.locked ? <><Lock size={13} /> Locked</> : <><Play size={13} /> Start <ArrowRight size={13} /></>}
+                </button>
               </motion.div>
             );
           })}
         </div>
       </section>
-      
-      {/* Testimonials */}
-      <section className="testimonials-section">
-        <h2 className="section-heading">What First Jobbers Say</h2>
-        <div className="testimonials-row">
-          {TESTIMONIALS.map((t, i) => {
-            const Icon = t.icon;
-            return (
-              <motion.div
-                key={i}
-                className="testimonial-card glass"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-              >
-                <p className="testimonial-text">{t.text}</p>
-                <div className="testimonial-author">
-                  <div className="testimonial-icon-wrap">
-                    <Icon size={16} />
-                  </div>
-                  <span className="testimonial-name">{t.name}</span>
-                </div>
-              </motion.div>
-            );
-          })}
+
+      {/* ═══════════════════════════════════════
+          6. CHARACTER SHOWCASE
+      ═══════════════════════════════════════ */}
+      <section className="characters-section" id="characters">
+        <motion.h2
+          className="section-heading"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Meet Your Cast
+        </motion.h2>
+        <motion.p
+          className="section-subheading"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+        >
+          Three characters. Each with an agenda.
+        </motion.p>
+        <div className="characters-row">
+          {CHARACTERS.map((char, i) => (
+            <motion.div
+              key={char.id}
+              className="char-card glass"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15 }}
+              whileHover={{ rotateY: 3, rotateX: -3, y: -6 }}
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              <div className="char-emoji-wrap" style={{ borderColor: char.color, boxShadow: `0 0 20px ${char.color}40` }}>
+                <img src={char.img} alt={char.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+              </div>
+              <span className="char-role-badge" style={{ color: char.color, borderColor: `${char.color}40`, background: `${char.color}15` }}>
+                {char.role}
+              </span>
+              <h3 className="char-name">{char.name}</h3>
+              <p className="char-bio">{char.bio}</p>
+            </motion.div>
+          ))}
         </div>
       </section>
-      
-      {/* Final CTA */}
-      <section className="final-cta">
+
+      {/* ═══════════════════════════════════════
+          7. FINAL CTA
+      ═══════════════════════════════════════ */}
+      <section className="final-cta" id="cta">
         <motion.div
+          className="final-cta-inner glass"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
         >
-          <h2>Ready to Decode Your Salary?</h2>
-          <p>Join thousands of first jobbers who finally understand their payslip.</p>
-          <button className="btn btn-primary hero-cta" onClick={() => navigate('/quest')}>
-            <Play size={16} /> Start Quest Now
+          <div className="final-cta-badge">
+            <Flame size={14} /> 10,000+ first jobbers already playing
+          </div>
+          <h2>Your first payslip already arrived.</h2>
+          <h2 className="final-cta-accent">Do you understand it?</h2>
+          <p>Join 10,000+ first jobbers who stopped guessing and started knowing.</p>
+          <button className="btn btn-primary hero-cta glow-pulse final-cta-btn" onClick={goStart}>
+            <Play size={16} />
+            Start My Quest — It's Free
+            <ArrowRight size={16} />
           </button>
+          <div className="hero-trust-badges final-trust">
+            <span className="trust-badge"><CheckCircle size={12} /> No credit card</span>
+            <span className="trust-badge"><CheckCircle size={12} /> 5 min to start</span>
+            <span className="trust-badge"><CheckCircle size={12} /> Built for India</span>
+          </div>
         </motion.div>
       </section>
-      
-      {/* Footer */}
+
+      {/* ── Footer ── */}
       <footer className="landing-footer">
         <div className="footer-brand">
           <div className="footer-logo">
             <Coins size={18} />
             <span>WealthQuest</span>
           </div>
-          <span className="footer-tagline">Duolingo for Money — Built with <Heart size={12} className="footer-heart" /> for India's First Jobbers</span>
+          <span className="footer-tagline">
+            Duolingo for Money — Built with <Heart size={12} className="footer-heart" /> for India's First Jobbers
+          </span>
         </div>
       </footer>
+
+      {/* ═══════════════════════════════════════
+          8. MOBILE STICKY CTA
+      ═══════════════════════════════════════ */}
+      <AnimatePresence>
+        {showSticky && (
+          <motion.div
+            className="sticky-cta"
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 80, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+          >
+            <button className="btn btn-primary sticky-cta-btn" onClick={goStart}>
+              <Play size={14} /> Start Quest — Free
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
