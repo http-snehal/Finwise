@@ -429,51 +429,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════
-          6. CHARACTER SHOWCASE
-      ═══════════════════════════════════════ */}
-      <section className="characters-section" id="characters">
-        <motion.h2
-          className="section-heading"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          Meet Your Cast
-        </motion.h2>
-        <motion.p
-          className="section-subheading"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-        >
-          Three characters. Each with an agenda.
-        </motion.p>
-        <div className="characters-row">
-          {CHARACTERS.map((char, i) => (
-            <motion.div
-              key={char.id}
-              className="char-card glass"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
-              whileHover={{ rotateY: 3, rotateX: -3, y: -6 }}
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              <div className="char-emoji-wrap" style={{ borderColor: char.color, boxShadow: `0 0 20px ${char.color}40` }}>
-                <img src={char.img} alt={char.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-              </div>
-              <span className="char-role-badge" style={{ color: char.color, borderColor: `${char.color}40`, background: `${char.color}15` }}>
-                {char.role}
-              </span>
-              <h3 className="char-name">{char.name}</h3>
-              <p className="char-bio">{char.bio}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+
 
       {/* ═══════════════════════════════════════
           7. FINAL CTA
@@ -485,15 +441,13 @@ export default function Landing() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
         >
-          <div className="final-cta-badge">
-            <Flame size={14} /> 10,000+ first jobbers already playing
-          </div>
-          <h2>Your first payslip already arrived.</h2>
-          <h2 className="final-cta-accent">Do you understand it?</h2>
-          <p>Join 10,000+ first jobbers who stopped guessing and started knowing.</p>
+
+          <h2>Your financial life just started.</h2>
+          <h2 className="final-cta-accent">Are you ready for it?</h2>
+          <p>Stop guessing. Start knowing. FinWise turns confusing money decisions into skills you actually use.</p>
           <button className="btn btn-primary hero-cta glow-pulse final-cta-btn" onClick={goStart}>
             <Play size={16} />
-            Start My Quest — It's Free
+            START MY QUEST — IT'S FREE
             <ArrowRight size={16} />
           </button>
           <div className="hero-trust-badges final-trust">
