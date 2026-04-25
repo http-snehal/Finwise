@@ -598,53 +598,6 @@ export const CTC_COMPONENTS = [
   { id: 'tds', name: 'TDS', monthlyAmount: 3733, annualAmount: 44800, type: 'deduction', lucideIcon: 'landmark', description: 'Income tax deducted upfront by employer.' },
 ];
 
-// ===========================
-// MODULE 3 - STAGE 1: The Tax Shield (Story)
-// ===========================
-export const MODULE_3_STAGE_1_DIALOGUE = [
-  { character: 'narrator', text: "Raj is a freelance designer. He just landed a massive ₹25 Lakh contract!", mood: 'excited', audio: 'success' },
-  { character: 'raj', text: "I'm rich! I'm going to buy that new laptop!", mood: 'ecstatic', audio: 'pop' },
-  { character: 'tanmay', text: "Not so fast. Did you register for GST?", mood: 'villain', audio: 'villain' },
-  { character: 'raj', text: "G-S-what? I just draw logos, man.", mood: 'confused', audio: 'error' },
-  { character: 'laxmi', text: "GST stands for Goods and Services Tax. Since your turnover exceeds ₹20 Lakhs, it's mandatory.", mood: 'wise', audio: 'mentor' },
-  { character: 'tanmay', text: "If you don't charge it, I'll take it from your pocket as a penalty!", mood: 'villain', audio: 'villain' },
-  { character: 'player', text: "Wait, so Raj has to pay the tax from his ₹25 Lakhs?", mood: 'curious', audio: 'pop' },
-  { character: 'laxmi', text: "No! He adds it to his invoice. The client pays it. Raj just collects it for the government.", mood: 'wise', audio: 'chime' },
-  { character: 'raj', text: "Oh! So it's not my money anyway? Phew.", mood: 'happy', audio: 'success' },
-];
-
-// ===========================
-// MODULE 3 - STAGE 2: GST Mechanics (Cards)
-// ===========================
-export const MODULE_3_STAGE_2_CARDS = [
-  { id: 'cgst-sgst', title: 'Intra-State Sales', description: 'When selling within your state, split the GST into CGST (Central) and SGST (State).', icon: 'split-square-horizontal', color: '#8B5CF6' },
-  { id: 'igst', title: 'Inter-State Sales', description: 'When selling across state borders, you charge a single IGST (Integrated GST).', icon: 'globe', color: '#A78BFA' },
-  { id: 'itc', title: 'Input Tax Credit', description: 'Bought a laptop for work? The GST you paid on it can be deducted from the GST you owe!', icon: 'piggy-bank', color: '#10B981' },
-];
-
-// ===========================
-// MODULE 3 - STAGE 3: Tax Quest (Quest)
-// ===========================
-export const MODULE_3_QUEST = [
-  {
-    character: 'laxmi',
-    text: "Raj sold ₹10,000 worth of designs within his state. GST is 18%. How is it charged?",
-    options: [
-      { text: '18% IGST', correct: false, response: 'Remember, it is within the same state!' },
-      { text: '9% CGST and 9% SGST', correct: true, response: 'Perfect! Intra-state sales are split equally.' },
-      { text: '18% CGST', correct: false, response: 'The state needs its share too (SGST).' },
-    ],
-  },
-  {
-    character: 'laxmi',
-    text: "Raj collected ₹1,800 in GST. But he paid ₹800 GST when buying his design software. What does he pay the government?",
-    options: [
-      { text: '₹1,800', correct: false, response: 'He can claim Input Tax Credit on his business expenses!' },
-      { text: '₹2,600', correct: false, response: 'You subtracted it the wrong way!' },
-      { text: '₹1,000', correct: true, response: 'Exactly! ₹1,800 collected - ₹800 Input Tax Credit = ₹1,000 owed.' },
-    ],
-  },
-];
 
 // Audio map — keys match the `audio` field on dialogue lines
 export const AUDIO_MAP = {

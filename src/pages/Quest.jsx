@@ -14,12 +14,7 @@ import PortfolioBuilder from '../components/PortfolioBuilder';
 import LearningCards from '../components/LearningCards';
 import {
   STAGE_1_DIALOGUE,
-<<<<<<< HEAD
   STAGE_4_DIALOGUE,
-=======
-  MODULE_2_STAGE_1_DIALOGUE,
-  MODULE_2_STAGE_2_QUEST,
->>>>>>> 71aeffbd71405e99aa9a7934366eeeaaadb07c72
   MODULE_3_STAGE_1_DIALOGUE,
   MODULE_3_STAGE_2_CARDS,
   MODULE_3_QUEST,
