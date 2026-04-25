@@ -324,9 +324,10 @@
 .stats-row {
   max-width: 1000px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
   text-align: center;
 }
 
@@ -353,6 +354,7 @@
   line-height: 1.4;
   max-width: 200px;
   margin: 0 auto;
+  text-align: center;
 }
 
 /* ── 3. Features ── */

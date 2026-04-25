@@ -26,18 +26,19 @@ const STATS = [
 ];
 
 const FEATURES = [
-  { icon: BookOpen,   title: 'Story Engine',       desc: 'Live a financial story — not a lecture. Every lesson is a scene.' },
-  { icon: Search,     title: 'Payslip Detective',  desc: 'Unlock each payslip line by answering the right question.' },
-  { icon: Wallet,     title: 'Salary Quest',       desc: 'Master the 50/30/20 rule through real budget challenges.' },
-  { icon: Zap,        title: 'XP & Streaks',       desc: 'Earn XP, maintain streaks and stay financially sharp.' },
-  { icon: BarChart2,  title: 'Skill Tree',         desc: 'Unlock modules as you level up. Progress feels earned.' },
-  { icon: Users,      title: 'Mentor Cast',        desc: 'Laxmi, Tanmay and Iqbal guide — and challenge — you.' },
+  { icon: BookOpen,   title: 'Learn by Story',            desc: 'Finance feels overwhelming. We make it a story you live — not a textbook you survive.' },
+  { icon: LayoutDashboard, title: 'Master Every Topic',   desc: "Salary, taxes, investments, GST — every financial concept you'll ever need, in one place." },
+  { icon: Gamepad2,   title: 'Practice Before Reality',   desc: 'Make financial decisions with virtual money first. Build confidence before the stakes are real.' },
+  { icon: Zap,        title: 'Build Lasting Habits',      desc: 'Streaks, XP and daily lessons turn financial literacy into a habit — not a one-time crash course.' },
+  { icon: TrendingUp, title: 'Your Learning Path',        desc: 'Everyone starts somewhere. FinWise grows with you — from broke student to financially sharp professional.' },
+  { icon: Star,       title: 'Learn at Your Own Pace',    desc: 'No deadlines, no pressure. Pick up where you left off — your progress is always saved and waiting for you.' },
 ];
 
 const HOW_STEPS = [
-  { step: '01', icon: Play,      title: 'Start Your Quest',   desc: 'Laxmi introduces your financial world. Your first salary just landed.' },
-  { step: '02', icon: Search,    title: 'Learn by Doing',     desc: 'Drag, discover, and play through real salary and tax scenarios.' },
-  { step: '03', icon: Trophy,    title: 'Level Up',           desc: 'Earn XP, unlock badges, and build habits that last a lifetime.' },
+  { step: '01', icon: BookOpen,  title: 'Listen Story',       desc: 'Laxmi introduces your financial world. Your first salary just landed.' },
+  { step: '02', icon: Search,    title: 'Complete Quest',     desc: 'Drag, discover, and play through real salary and tax scenarios.' },
+  { step: '03', icon: Gamepad2,  title: 'Play Minigame',      desc: 'Test your knowledge with an interactive budgeting challenge.' },
+  { step: '04', icon: Trophy,    title: 'Level Up',           desc: 'Earn XP, unlock badges, and build habits that last a lifetime.' },
 ];
 
 const MODULES = [
