@@ -260,35 +260,6 @@ export default function Quest() {
             </motion.div>
           )}
 
-          {/* Stage 7: The Tax Shield */}
-          {view === 'stage-7' && (
-            <motion.div key="stage-7" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <DialogueBox
-                dialogues={MODULE_3_STAGE_1_DIALOGUE}
-                onComplete={() => handleStageComplete(6)}
-              />
-            </motion.div>
-          )}
-
-          {/* Stage 8: GST Mechanics */}
-          {view === 'stage-8' && (
-            <motion.div key="stage-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <LearningCards
-                cards={MODULE_3_STAGE_2_CARDS}
-                onComplete={() => handleStageComplete(7)}
-              />
-            </motion.div>
-          )}
-
-          {/* Stage 9: Tax Quest */}
-          {view === 'stage-9' && (
-            <motion.div key="stage-9" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <SocraticDialogue
-                questData={MODULE_3_QUEST}
-                onComplete={() => handleStageComplete(8)}
-              />
-            </motion.div>
-          )}
 
           {/* Complete Screen */}
           {view === 'complete' && (
