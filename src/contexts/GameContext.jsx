@@ -13,13 +13,17 @@ const initialState = {
   // Progress
   currentScene: 0,
   currentModule: 'payslip-101',
+  currentModule: 'payslip-101',
   completedScenes: [],
   completedQuests: [],
+  completedStages: [],
+  activeStageByModule: { 1: 0, 2: 0 },
   
   // Badges
   badges: [],
   
   // User info
+  user: JSON.parse(localStorage.getItem('finwise_user')) || null,
   playerName: 'Explorer',
   ctcAmount: 800000,
   
@@ -103,6 +107,30 @@ const BADGE_DEFINITIONS = {
 
 function gameReducer(state, action) {
   switch (action.type) {
+    case 'LOGIN': {
+      localStorage.setItem('finwise_user', JSON.stringify({ token: action.payload.token, ...action.payload.user }));
+      return {
+        ...state,
+        user: { token: action.payload.token, ...action.payload.user },
+        xp: action.payload.user.xp || 0,
+        badges: action.payload.user.badges || [],
+        playerName: action.payload.user.username || 'Explorer',
+        completedStages: action.payload.user.completedStages || [],
+        activeStageByModule: action.payload.user.activeStageByModule || { 1: 0, 2: 0 },
+      };
+    }
+    case 'LOGOUT': {
+      localStorage.removeItem('finwise_user');
+      return {
+        ...state,
+        user: null,
+        xp: 0,
+        badges: [],
+        playerName: 'Explorer',
+        completedStages: [],
+        activeStageByModule: { 1: 0, 2: 0 },
+      };
+    }
     case 'ADD_XP': {
       const newXp = state.xp + action.payload;
       return {
@@ -149,6 +177,23 @@ function gameReducer(state, action) {
       };
     }
     
+    case 'COMPLETE_STAGE': {
+      const { stageId, mod, localIdx, moduleStagesCount } = action.payload;
+      const newCompleted = [...new Set([...state.completedStages, stageId])];
+      
+      const currentActive = state.activeStageByModule[mod] ?? 0;
+      const newActive = currentActive === localIdx ? Math.min(currentActive + 1, moduleStagesCount) : currentActive;
+      
+      return {
+        ...state,
+        completedStages: newCompleted,
+        activeStageByModule: {
+          ...state.activeStageByModule,
+          [mod]: newActive
+        }
+      };
+    }
+
     case 'EARN_BADGE': {
       const badge = BADGE_DEFINITIONS[action.payload];
       if (!badge || state.badges.find(b => b.id === badge.id)) return state;
@@ -211,9 +256,34 @@ function gameReducer(state, action) {
 export function GameProvider({ children }) {
   const [state, dispatch] = useReducer(gameReducer, initialState);
   
+  const login = useCallback((token, user) => {
+    dispatch({ type: 'LOGIN', payload: { token, user } });
+  }, []);
+
+  const logout = useCallback(() => {
+    dispatch({ type: 'LOGOUT' });
+  }, []);
+
+  const syncToBackend = useCallback(async (updates) => {
+    if (!state.user?.token) return;
+    try {
+      await fetch('/api/user/progress', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${state.user.token}`
+        },
+        body: JSON.stringify(updates)
+      });
+    } catch (err) {
+      console.error('Failed to sync progress', err);
+    }
+  }, [state.user]);
+
   const addXp = useCallback((amount) => {
     dispatch({ type: 'ADD_XP', payload: amount });
-  }, []);
+    syncToBackend({ xp: state.xp + amount });
+  }, [state.xp, syncToBackend]);
   
   const loseHeart = useCallback(() => {
     dispatch({ type: 'LOSE_HEART' });
@@ -228,8 +298,15 @@ export function GameProvider({ children }) {
   }, []);
   
   const earnBadge = useCallback((badgeId) => {
-    dispatch({ type: 'EARN_BADGE', payload: badgeId });
-  }, []);
+    const badge = BADGE_DEFINITIONS[badgeId];
+    if (badge && !state.badges.find(b => b.id === badgeId)) {
+      dispatch({ type: 'EARN_BADGE', payload: badgeId });
+      syncToBackend({ 
+        badges: [...state.badges, { ...badge, earnedAt: new Date().toISOString() }],
+        xp: state.xp + badge.xpReward 
+      });
+    }
+  }, [state.badges, state.xp, syncToBackend]);
   
   const dismissBadge = useCallback(() => {
     dispatch({ type: 'DISMISS_BADGE' });
@@ -255,8 +332,14 @@ export function GameProvider({ children }) {
     dispatch({ type: 'COMPLETE_QUEST', payload: questId });
   }, []);
   
+  const completeStage = useCallback((payload) => {
+    dispatch({ type: 'COMPLETE_STAGE', payload });
+  }, []);
+  
   const value = {
     ...state,
+    login,
+    logout,
     addXp,
     loseHeart,
     advanceScene,
@@ -268,6 +351,8 @@ export function GameProvider({ children }) {
     answerQuiz,
     clearXpPopup,
     completeQuest,
+    completeStage,
+    syncToBackend,
     BADGE_DEFINITIONS,
   };
   

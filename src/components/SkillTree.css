@@ -1,26 +1,64 @@
 .skill-tree {
   width: 100%;
-  max-width: 540px;
+  max-width: 580px;
   margin: 0 auto;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* Module Card */
+.skill-tree-module {
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
 }
 
 .skill-tree-header {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.module-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 4px;
 }
 
 .skill-tree-title {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--text-bright);
-  margin-bottom: 4px;
+  margin: 0;
+}
+
+.module-complete-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--success);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
 }
 
 .skill-tree-subtitle {
   font-size: 0.85rem;
   color: var(--text-muted);
+  margin: 0;
 }
 
 .skill-tree-track {
@@ -56,8 +94,8 @@
   gap: 14px;
   width: 100%;
   padding: 16px;
-  background: var(--bg-card);
-  border: 1.5px solid rgba(255, 255, 255, 0.05);
+  background: var(--bg-elevated);
+  border: 1.5px solid rgba(0, 0, 0, 0.04);
   border-radius: var(--radius-lg);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -72,14 +110,14 @@
 }
 
 .tree-node.node-completed {
-  border-color: rgba(0, 230, 118, 0.15);
-  background: linear-gradient(135deg, var(--bg-card), rgba(0, 230, 118, 0.03));
+  border-color: rgba(16, 185, 129, 0.15);
+  background: linear-gradient(135deg, var(--bg-elevated), rgba(16, 185, 129, 0.04));
 }
 
 .tree-node.node-active {
   border-color: var(--node-color, var(--neon-primary));
   box-shadow: 0 0 20px color-mix(in srgb, var(--node-color, var(--neon-primary)) 15%, transparent);
-  background: linear-gradient(135deg, var(--bg-card), color-mix(in srgb, var(--node-color) 3%, transparent));
+  background: linear-gradient(135deg, var(--bg-elevated), color-mix(in srgb, var(--node-color) 4%, transparent));
 }
 
 .tree-node.node-locked {
@@ -89,7 +127,7 @@
 
 .tree-node.node-locked:hover {
   transform: none;
-  border-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 0, 0, 0.04);
 }
 
 /* Circle icon */
@@ -101,12 +139,12 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background: var(--bg-elevated);
+  background: var(--bg-card);
   transition: all 0.3s ease;
 }
 
 .node-completed .node-circle {
-  background: rgba(0, 230, 118, 0.15);
+  background: rgba(16, 185, 129, 0.12);
   color: var(--success);
 }
 
@@ -166,8 +204,14 @@
 
 .node-type-badge.quiz {
   color: var(--success);
-  background: rgba(0, 230, 118, 0.1);
-  border: 1px solid rgba(0, 230, 118, 0.15);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.node-type-badge.minigame {
+  color: #3B82F6;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.15);
 }
 
 .node-title {

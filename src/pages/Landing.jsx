@@ -5,7 +5,8 @@ import { useState } from 'react';
 import {
   FileText, Gamepad2, Wallet, Trophy, Play, Swords,
   Clapperboard, AlertCircle, Search, Dumbbell,
-  Code, PenTool, Briefcase, Coins, Zap, Heart
+  Code, PenTool, Briefcase, Coins, Zap, Heart,
+  LayoutDashboard
 } from 'lucide-react';
 import './Landing.css';
 
@@ -24,7 +25,7 @@ const TESTIMONIALS = [
 
 export default function Landing() {
   const navigate = useNavigate();
-  const { setPlayerName } = useGame();
+  const { setPlayerName, user } = useGame();
   const [name, setName] = useState('');
   const [showNameInput, setShowNameInput] = useState(false);
   
@@ -119,35 +120,18 @@ export default function Landing() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
           >
-            {showNameInput && (
-              <motion.div
-                className="name-input-wrapper"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-              >
-                <input
-                  type="text"
-                  className="name-input"
-                  placeholder="Enter your name, adventurer..."
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleStart()}
-                  autoFocus
-                  maxLength={20}
-                />
-              </motion.div>
+            {user ? (
+              <button className="btn btn-primary hero-cta" onClick={() => navigate('/dashboard')} id="start-quest-btn">
+                <LayoutDashboard size={16} /> Go to Dashboard
+              </button>
+            ) : (
+              <button className="btn btn-primary hero-cta" onClick={() => navigate('/auth')} id="start-quest-btn">
+                <Play size={16} /> Get Started
+              </button>
             )}
             
-            <button className="btn btn-primary hero-cta" onClick={handleStart} id="start-quest-btn">
-              {showNameInput ? (
-                <><Swords size={16} /> Begin Your Quest</>
-              ) : (
-                <><Play size={16} /> Start Quest</>
-              )}
-            </button>
-            
             <span className="hero-cta-subtext">
-              No sign-up required · 10 min adventure · 100% free
+              10 min adventure · 100% free
             </span>
           </motion.div>
         </motion.div>

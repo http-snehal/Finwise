@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useGame } from '../contexts/GameContext';
@@ -9,79 +9,101 @@ import DialogueBox from '../components/DialogueBox';
 import CTCBreakdown from '../components/CTCBreakdown';
 import BudgetGame from '../components/BudgetGame';
 import BadgeUnlock from '../components/BadgeUnlock';
+import SocraticDialogue from '../components/SocraticDialogue';
+import PortfolioBuilder from '../components/PortfolioBuilder';
 import {
   STAGE_1_DIALOGUE,
   MODULE_2_STAGE_1_DIALOGUE,
   MODULE_2_STAGE_2_QUEST,
   STAGES,
 } from '../data/storyData';
-import SocraticDialogue from '../components/SocraticDialogue';
-import PortfolioBuilder from '../components/PortfolioBuilder';
 import './Quest.css';
 
-// Views: skill-tree | stage-1 | stage-2 | stage-3 | stage-4 | complete
+// Helper: get the module a global stage index belongs to
+function getModuleForStage(globalIndex) {
+  return STAGES[globalIndex]?.module || 1;
+}
+
+// Helper: get local index of a stage within its module
+function getLocalIndex(globalIndex) {
+  const mod = getModuleForStage(globalIndex);
+  const moduleStages = STAGES.filter(s => s.module === mod);
+  return moduleStages.findIndex(s => s.id === STAGES[globalIndex].id);
+}
+
 export default function Quest() {
   const [view, setView] = useState('skill-tree');
-  const [completedStages, setCompletedStages] = useState([]);
-  const [activeStage, setActiveStage] = useState(0);
   const [budgetScore, setBudgetScore] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
-  
-  const { addXp, earnBadge, xp, badges, playerName } = useGame();
+
+  const { addXp, earnBadge, xp, badges, playerName, completedStages, activeStageByModule, completeStage, user, syncToBackend } = useGame();
   const navigate = useNavigate();
-  
-  const handleStageSelect = useCallback((index) => {
-    const stageId = STAGES[index].id;
-    if (index === activeStage || completedStages.includes(stageId)) {
-      setView(`stage-${index + 1}`);
+
+  const handleStageSelect = useCallback((globalIndex) => {
+    const stage = STAGES[globalIndex];
+    const mod = stage.module || 1;
+    const localIdx = getLocalIndex(globalIndex);
+    const moduleActive = activeStageByModule[mod] ?? 0;
+
+    // Allow if completed or is the current active stage in that module
+    if (completedStages.includes(stage.id) || localIdx === moduleActive) {
+      setView(`stage-${globalIndex + 1}`);
     }
-  }, [activeStage, completedStages]);
-  
-  const handleStageComplete = useCallback((stageIndex) => {
-    const stageId = STAGES[stageIndex].id;
-    const stageData = STAGES[stageIndex];
-    
-    setCompletedStages(prev => {
-      if (!prev.includes(stageId)) {
-        addXp(stageData.xpReward);
-        return [...prev, stageId];
-      }
-      return prev;
-    });
-    
+  }, [activeStageByModule, completedStages]);
+
+  const handleStageComplete = useCallback((globalIndex) => {
+    const stage = STAGES[globalIndex];
+    const stageId = stage.id;
+    const mod = stage.module || 1;
+    const localIdx = getLocalIndex(globalIndex);
+    const moduleStagesCount = STAGES.filter(s => s.module === mod).length;
+
+    // Award XP
+    if (!completedStages.includes(stageId)) {
+      addXp(stage.xpReward);
+    }
+
+    // Mark complete
+    completeStage({ stageId, mod, localIdx, moduleStagesCount });
+
     // Badge rewards
-    if (stageIndex === 1) {
+    if (globalIndex === 1 && !completedStages.includes(stageId)) {
       earnBadge('payslip-pro');
-    } else if (stageIndex === 2) {
+    } else if (globalIndex === 2 && !completedStages.includes(stageId)) {
       earnBadge('first-quest');
       earnBadge('streak-starter');
       setShowConfetti(true);
-    } else if (stageIndex === 5) {
+    } else if (globalIndex === 5 && !completedStages.includes(stageId)) {
       earnBadge('first-investor');
       setShowConfetti(true);
     }
+
+    // Sync to backend (use updated values locally for the sync)
+    const newCompleted = [...new Set([...completedStages, stageId])];
+    const currentActive = activeStageByModule[mod] ?? 0;
+    const newActive = currentActive === localIdx ? Math.min(currentActive + 1, moduleStagesCount) : currentActive;
     
-    // Advance active stage safely checking prev
-    setActiveStage(prev => {
-      if (prev === stageIndex) {
-        return Math.min(prev + 1, STAGES.length);
-      }
-      return prev;
+    syncToBackend({
+      completedStages: newCompleted,
+      activeStageByModule: { ...activeStageByModule, [mod]: newActive }
     });
-    
-    // Return to skill tree (or go to complete)
-    if (stageIndex >= STAGES.length - 1) {
+
+    // Check if this was the last stage across ALL modules
+    const allStageIds = STAGES.map(s => s.id);
+    const allDone = allStageIds.every(id => newCompleted.includes(id));
+
+    if (allDone) {
       setView('complete');
     } else {
       setView('skill-tree');
     }
-  }, [addXp, earnBadge]);
-  
+  }, [completedStages, addXp, earnBadge, completeStage, activeStageByModule, syncToBackend]);
+
   const handleBudgetComplete = useCallback((result) => {
     setBudgetScore(result?.score || 0);
     handleStageComplete(2);
   }, [handleStageComplete]);
-  
+
   const getStageTitle = () => {
     switch (view) {
       case 'stage-1': return 'Stage 1: The Story Begins';
@@ -93,14 +115,14 @@ export default function Quest() {
       default: return null;
     }
   };
-  
+
   const stageTitle = getStageTitle();
-  
+
   return (
     <div className="quest-page">
       <HUD />
       <BadgeUnlock />
-      
+
       {/* Confetti */}
       {showConfetti && (
         <div className="confetti-container">
@@ -119,7 +141,7 @@ export default function Quest() {
           ))}
         </div>
       )}
-      
+
       {/* Back button + Stage title (when inside a stage) */}
       {stageTitle && (
         <motion.div
@@ -133,7 +155,7 @@ export default function Quest() {
           <span className="stage-title">{stageTitle}</span>
         </motion.div>
       )}
-      
+
       {/* Content area */}
       <div className="quest-content">
         <AnimatePresence mode="wait">
@@ -142,13 +164,13 @@ export default function Quest() {
             <motion.div key="skill-tree" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <SkillTree
                 completedStages={completedStages}
-                activeStage={activeStage}
+                activeStageByModule={activeStageByModule}
                 onStageSelect={handleStageSelect}
               />
             </motion.div>
           )}
-          
-          {/* Stage 1: The Story Begins (Combined Short Story) */}
+
+          {/* Stage 1: The Story Begins */}
           {view === 'stage-1' && (
             <motion.div key="stage-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <DialogueBox
@@ -157,21 +179,21 @@ export default function Quest() {
               />
             </motion.div>
           )}
-          
-          {/* Stage 2: Payslip Detective (Quest) */}
+
+          {/* Stage 2: Payslip Detective */}
           {view === 'stage-2' && (
             <motion.div key="stage-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <CTCBreakdown onComplete={() => handleStageComplete(1)} />
             </motion.div>
           )}
-          
-          {/* Stage 3: Budget Battle (Quiz) */}
+
+          {/* Stage 3: Budget Battle */}
           {view === 'stage-3' && (
             <motion.div key="stage-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <BudgetGame onComplete={handleBudgetComplete} />
             </motion.div>
           )}
-          
+
           {/* Stage 4: The Sleeping Money */}
           {view === 'stage-4' && (
             <motion.div key="stage-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -198,7 +220,7 @@ export default function Quest() {
               <PortfolioBuilder onComplete={() => handleStageComplete(5)} />
             </motion.div>
           )}
-          
+
           {/* Complete Screen */}
           {view === 'complete' && (
             <motion.div
@@ -216,12 +238,12 @@ export default function Quest() {
                 >
                   <Trophy size={64} className="complete-trophy-icon" />
                 </motion.div>
-                
+
                 <h2 className="complete-title">Journey Complete!</h2>
                 <p className="complete-subtitle">
                   Great work, {playerName}! You've mastered Payslip 101 and The Investor.
                 </p>
-                
+
                 <div className="complete-stats">
                   <div className="stat-item">
                     <Zap size={18} className="stat-icon neon-text" />
@@ -234,7 +256,7 @@ export default function Quest() {
                     <span className="stat-label">Badges</span>
                   </div>
                 </div>
-                
+
                 {badges.length > 0 && (
                   <div className="complete-badges">
                     <h3 className="complete-badges-title">Badges Earned</h3>
@@ -253,7 +275,7 @@ export default function Quest() {
                     </div>
                   </div>
                 )}
-                
+
                 <div className="complete-next">
                   <div className="complete-locked-module">
                     <Lock size={14} />

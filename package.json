@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "nodemon server/index.js",
+    "start": "concurrently \"npm run server\" \"npm run dev\""
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
@@ -21,10 +23,12 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^9.2.1",
     "eslint": "^10.2.1",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.5.0",
+    "nodemon": "^3.1.14",
     "vite": "^8.0.10"
   }
 }
