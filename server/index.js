@@ -18,6 +18,19 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 
+// Ignore browser default requests to prevent annoying console errors
+app.use((req, res, next) => {
+  if (req.path === '/favicon.ico' || req.path.startsWith('/.well-known/')) {
+    return res.status(204).end();
+  }
+  next();
+});
+
+// Friendly root route
+app.get('/', (req, res) => {
+  res.json({ message: "Finwise API Server is running! Please access the frontend via your Vite URL (e.g. localhost:5173)." });
+});
+
 // Connect to MongoDB
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/finwise';
 
