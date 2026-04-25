@@ -3,6 +3,12 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
+  "functions": {
+    "api/**/*.js": {
+      "memory": 256,
+      "maxDuration": 10
+    }
+  },
   "rewrites": [
     { "source": "/api/auth/register", "destination": "/api/auth?action=register" },
     { "source": "/api/auth/login", "destination": "/api/auth?action=login" },

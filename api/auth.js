@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import dbConnect from '../_lib/dbConnect.js';
-import User from '../_lib/User.js';
+import dbConnect from './_lib/dbConnect.js';
+import User from './_lib/User.js';
 
 export default async function handler(req, res) {
   // Set CORS headers
@@ -14,12 +14,21 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  await dbConnect();
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
+
+  try {
+    await dbConnect();
+  } catch (err) {
+    console.error('DB Connection Error:', err);
+    return res.status(500).json({ message: 'Database connection failed' });
+  }
 
   const { action } = req.query;
 
   // POST /api/auth?action=register
-  if (req.method === 'POST' && action === 'register') {
+  if (action === 'register') {
     try {
       const { username, email, password } = req.body;
 
@@ -53,12 +62,13 @@ export default async function handler(req, res) {
         }
       });
     } catch (error) {
+      console.error('Register error:', error);
       return res.status(500).json({ message: error.message });
     }
   }
 
   // POST /api/auth?action=login
-  if (req.method === 'POST' && action === 'login') {
+  if (action === 'login') {
     try {
       const { email, password } = req.body;
 
@@ -91,6 +101,7 @@ export default async function handler(req, res) {
         }
       });
     } catch (error) {
+      console.error('Login error:', error);
       return res.status(500).json({ message: error.message });
     }
   }
