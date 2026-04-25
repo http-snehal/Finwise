@@ -1,0 +1,241 @@
+.investment-quest {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.iq-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.iq-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.iq-title-icon {
+  color: #1A56DB;
+}
+
+.iq-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.iq-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.iq-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--surface-hover);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.iq-progress-fill {
+  height: 100%;
+  background: #1A56DB;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.iq-progress-text {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.iq-question-card {
+  flex: 1;
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.iq-question-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(26, 86, 219, 0.1);
+  color: #1A56DB;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  align-self: flex-start;
+}
+
+.iq-question {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+
+.iq-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.iq-option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-weight: 500;
+  text-align: left;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.iq-option:hover:not(:disabled) {
+  border-color: #1A56DB;
+  background: rgba(26, 86, 219, 0.05);
+  transform: translateY(-2px);
+}
+
+.iq-option.correct {
+  border-color: var(--success);
+  background: rgba(0, 230, 118, 0.1);
+}
+
+.iq-option.wrong {
+  border-color: var(--error);
+  background: rgba(255, 71, 87, 0.1);
+  opacity: 0.7;
+}
+
+.iq-option:disabled {
+  cursor: default;
+}
+
+.iq-opt-text {
+  flex: 1;
+  font-size: 1rem;
+}
+
+.iq-opt-icon {
+  margin-left: auto;
+}
+
+.correct-icon {
+  color: var(--success);
+}
+
+.wrong-icon {
+  color: var(--error);
+}
+
+.iq-dialogue-card {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: var(--bg);
+  border-radius: 16px;
+  border-left: 4px solid var(--explainer-color);
+  display: flex;
+  gap: 1rem;
+}
+
+.iq-dialogue-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--surface-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.iq-dialogue-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.iq-dialogue-content {
+  flex: 1;
+}
+
+.iq-dialogue-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.iq-dialogue-text {
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.iq-next-btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #1A56DB;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.iq-next-btn:hover {
+  background-color: #1545B0;
+}
+
+.iq-score-tracker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.iq-score-correct {
+  color: var(--success);
+}
+
+.iq-score-divider {
+  color: var(--border);
+}
+
+.iq-score-total {
+  color: var(--text-secondary);
+}

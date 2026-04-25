@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
 import { STAGES } from '../data/storyData';
-import { MessageCircleQuestion, TrendingUp, Search, PieChart, Lock, Check, ChevronRight, MessageSquare, BellRing } from 'lucide-react';
+import {
+  MessageSquare, BellRing, Search, PieChart,
+  Lock, Check, ChevronRight, BookOpen, TrendingUp, MessageCircleQuestion
+} from 'lucide-react';
 import './SkillTree.css';
 
 const ICON_MAP = {
@@ -10,6 +13,7 @@ const ICON_MAP = {
   'pie-chart': PieChart,
   'message-circle-question': MessageCircleQuestion,
   'trending-up': TrendingUp,
+  'book-open': BookOpen,
 };
 
 const MODULE_INFO = {

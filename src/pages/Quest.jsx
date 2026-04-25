@@ -8,11 +8,12 @@ import SkillTree from '../components/SkillTree';
 import DialogueBox from '../components/DialogueBox';
 import CTCBreakdown from '../components/CTCBreakdown';
 import BudgetGame from '../components/BudgetGame';
+import LearningCards from '../components/LearningCards';
+import InvestmentQuest from '../components/InvestmentQuest';
 import BadgeUnlock from '../components/BadgeUnlock';
 import {
   STAGE_1_DIALOGUE,
-  MODULE_2_STAGE_1_DIALOGUE,
-  MODULE_2_STAGE_2_QUEST,
+  STAGE_4_DIALOGUE,
   STAGES,
 } from '../data/storyData';
 import SocraticDialogue from '../components/SocraticDialogue';
@@ -55,6 +56,8 @@ export default function Quest() {
     } else if (stageIndex === 2) {
       earnBadge('first-quest');
       earnBadge('streak-starter');
+    } else if (stageIndex === 5) {
+      earnBadge('inflation-slayer');
       setShowConfetti(true);
     } else if (stageIndex === 5) {
       earnBadge('first-investor');
@@ -87,9 +90,9 @@ export default function Quest() {
       case 'stage-1': return 'Stage 1: The Story Begins';
       case 'stage-2': return 'Stage 2: Payslip Detective';
       case 'stage-3': return 'Stage 3: Budget Battle';
-      case 'stage-4': return 'Stage 1: The Sleeping Money';
-      case 'stage-5': return 'Stage 2: The Money Talk';
-      case 'stage-6': return 'Stage 3: Build Your Portfolio';
+      case 'stage-4': return 'Stage 4: The Sleeping Money';
+      case 'stage-5': return 'Stage 5: Investment 101';
+      case 'stage-6': return 'Stage 6: Pick Your Vehicle';
       default: return null;
     }
   };
@@ -172,30 +175,27 @@ export default function Quest() {
             </motion.div>
           )}
           
-          {/* Stage 4: The Sleeping Money */}
+          {/* Stage 4: The Sleeping Money (Story) */}
           {view === 'stage-4' && (
             <motion.div key="stage-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <DialogueBox
-                dialogues={MODULE_2_STAGE_1_DIALOGUE}
+                dialogues={STAGE_4_DIALOGUE}
                 onComplete={() => handleStageComplete(3)}
               />
             </motion.div>
           )}
 
-          {/* Stage 5: The Money Talk */}
+          {/* Stage 5: Investment 101 (Learning Cards) */}
           {view === 'stage-5' && (
             <motion.div key="stage-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <SocraticDialogue
-                questData={MODULE_2_STAGE_2_QUEST}
-                onComplete={() => handleStageComplete(4)}
-              />
+              <LearningCards onComplete={() => handleStageComplete(4)} />
             </motion.div>
           )}
 
-          {/* Stage 6: Build Your Portfolio */}
+          {/* Stage 6: Pick Your Vehicle (Quest) */}
           {view === 'stage-6' && (
             <motion.div key="stage-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <PortfolioBuilder onComplete={() => handleStageComplete(5)} />
+              <InvestmentQuest onComplete={() => handleStageComplete(5)} />
             </motion.div>
           )}
           

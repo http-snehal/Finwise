@@ -48,10 +48,10 @@ export const CHARACTERS = {
   iqbal: {
     id: 'iqbal',
     name: 'Inflation Iqbal',
-    role: 'The Silent Thief',
+    role: 'The Money Eater',
     avatar: '/characters/iqbal.png',
-    lucideIcon: 'flame',
-    color: '#F97316',
+    lucideIcon: 'trending-down',
+    color: '#9C27B0',
   },
 };
 
@@ -265,122 +265,180 @@ export const BUDGET_QUIZ = [
 ];
 
 // ===========================
-// MODULE 2: The Investor
 // ===========================
-
-export const MODULE_2_STAGE_1_DIALOGUE = [
+// MODULE 2 STAGE 1: The Sleeping Money (Story)
+// ===========================
+export const STAGE_4_DIALOGUE = [
   {
-    character: 'narrator',
-    text: "Evening. You're looking at your bank balance. ₹8,000 saved this month.",
+    character: 'laxmi',
+    text: "You saved ₹8,000 this month. Great. But it's just sitting there.",
     mood: 'warm',
-    audio: 'whoosh',
+    audio: 'mentor',
   },
   {
     character: 'player',
-    text: "Wow, I actually saved money! Let's just leave it in the bank.",
-    mood: 'ecstatic',
+    text: "Isn't saving money... good?",
+    mood: 'confused',
     audio: 'pop',
   },
   {
-    character: 'iqbal',
-    text: "Ah, sleeping money. My favorite kind. So easy to steal.",
-    mood: 'villain-entry',
-    audio: 'villain',
-  },
-  {
     character: 'laxmi',
-    text: "Stop right there, Iqbal! Leaving money idle is how inflation eats it.",
-    mood: 'dramatic',
+    text: "Saving and investing are not the same thing.",
+    mood: 'warm',
     audio: 'mentor',
   },
   {
     character: 'iqbal',
-    text: "I'm Inflation Iqbal. I make your ₹8,000 worth less every single year.",
+    text: "Every year I make everything 6% more expensive. Your sleeping money? I eat it slowly.",
     mood: 'villain-entry',
-    audio: 'suspense',
+    audio: 'villain',
+  },
+
+  {
+    character: 'laxmi',
+    text: "Iqbal is right. If your money isn't growing, inflation is quietly destroying its value.",
+    mood: 'dramatic',
+    audio: 'mentor',
+  },
+  {
+    character: 'player',
+    text: "So what do I do?",
+    mood: 'confused',
+    audio: 'pop',
   },
   {
     character: 'laxmi',
-    text: "Not on my watch. Let's talk about the vehicles of wealth creation.",
+    text: "You have to put your money to work. Let's look at your options.",
     mood: 'warm',
-    audio: 'chime',
-  },
-];
-
-export const MODULE_2_STAGE_2_QUEST = [
-  {
-    id: 'm2_q1',
-    speaker: 'laxmi',
-    text: "What do you do with your ₹8,000 savings?",
-    options: [
-      { id: 'a', text: 'Keep it in a savings account safely', correct: false, feedback: "A savings account gives ~3%. Inflation is ~6%. You are losing money!" },
-      { id: 'b', text: 'Invest it to beat inflation', correct: true, feedback: "Exactly! Your money needs to work harder than Iqbal works." },
-    ],
-    xpReward: 30,
-  },
-  {
-    id: 'm2_q2',
-    speaker: 'laxmi',
-    text: "To get higher returns, you have to take some risk. What would you pick?",
-    options: [
-      { id: 'a', text: '6% guaranteed return (Zero risk)', correct: false, feedback: "Zero risk means zero real growth after inflation. You need to take calculated risks." },
-      { id: 'b', text: '12% return with short-term ups and downs', correct: true, feedback: "Yes! In the long run, the stock market trends upwards." },
-    ],
-    xpReward: 30,
-  },
-  {
-    id: 'm2_q3',
-    speaker: 'iqbal',
-    text: "Just put it in a Fixed Deposit (FD) like your parents do! It's safe!",
-    options: [
-      { id: 'a', text: 'FDs are great for everything', correct: false, feedback: "FDs are good for emergencies, but they barely beat me (inflation)!" },
-      { id: 'b', text: 'FDs are for emergencies, not wealth creation', correct: true, feedback: "Smart kid. You can't get rich on 6% before taxes." },
-    ],
-    xpReward: 40,
-  },
-  {
-    id: 'm2_q4',
-    speaker: 'laxmi',
-    text: "Imagine 1,000 people pool their money and hire an expert to invest it. What is that?",
-    options: [
-      { id: 'a', text: 'A Mutual Fund', correct: true, feedback: "Spot on! The expert manages the risk for you." },
-      { id: 'b', text: 'A Ponzi Scheme', correct: false, feedback: "No! Mutual Funds are regulated by SEBI." },
-    ],
-    xpReward: 30,
-  },
-  {
-    id: 'm2_q5',
-    speaker: 'laxmi',
-    text: "Scared of picking the 'wrong month' to invest? What's the fix?",
-    options: [
-      { id: 'a', text: 'Wait for the perfect market crash', correct: false, feedback: "Time in the market beats timing the market!" },
-      { id: 'b', text: 'Start a SIP (Systematic Investment Plan)', correct: true, feedback: "Yes! Automate your investments every month regardless of market highs or lows." },
-    ],
-    xpReward: 50,
-  },
-  {
-    id: 'm2_q6',
-    speaker: 'laxmi',
-    text: "Don't know which companies to pick? You can just buy a tiny piece of India's top 50 companies.",
-    options: [
-      { id: 'a', text: 'That sounds like an Index Fund (Nifty 50)', correct: true, feedback: "Exactly. You are betting on India's growth." },
-      { id: 'b', text: 'I will pick random stocks instead', correct: false, feedback: "Stock picking is risky. Index funds are a safer bet." },
-    ],
-    xpReward: 40,
-  },
-  {
-    id: 'm2_q7',
-    speaker: 'laxmi',
-    text: "Arjun starts investing ₹5,000/mo at 22. Priya starts at 30. Who wins at age 50?",
-    options: [
-      { id: 'a', text: 'Priya, because she earns more later', correct: false, feedback: "Wrong! Compounding needs TIME. Arjun will have significantly more." },
-      { id: 'b', text: 'Arjun, because compounding works magic over time', correct: true, feedback: "Yes! The earlier you start, the less you have to save overall." },
-    ],
-    xpReward: 60,
+    audio: 'mentor',
   },
 ];
 
 // ===========================
+
+=======
+// MODULE 2 STAGE 2: Learning Cards
+// ===========================
+export const LEARNING_CARDS_DATA = [
+  {
+    id: 'lc1',
+    title: 'What is Investing?',
+    icon: 'trending-up',
+    text: 'Making your money grow faster than inflation.',
+    xpReward: 20,
+  },
+  {
+    id: 'lc2',
+    title: 'Risk vs Return',
+    icon: 'scale',
+    text: 'Higher risk = higher potential return, lower risk = slower growth.',
+    xpReward: 20,
+  },
+  {
+    id: 'lc3',
+    title: 'Fixed Deposit',
+    icon: 'shield-check',
+    text: '6–7% return, bank guaranteed, barely beats inflation (the bicycle).',
+    xpReward: 20,
+  },
+  {
+    id: 'lc4',
+    title: 'Mutual Funds',
+    icon: 'users',
+    text: 'Experts pool investor money and invest smarter together (the motorcycle).',
+    xpReward: 20,
+  },
+  {
+    id: 'lc5',
+    title: 'SIP',
+    icon: 'calendar-clock',
+    text: '₹500/month, automatic, no market timing needed.',
+    xpReward: 20,
+  },
+  {
+    id: 'lc6',
+    title: 'Index Funds',
+    icon: 'bar-chart',
+    text: 'Copies Nifty 50, low cost, beats most experts long term (the self-driving car).',
+    xpReward: 20,
+  },
+  {
+    id: 'lc7',
+    title: 'Compounding',
+    icon: 'layers',
+    text: 'Your returns earn returns. Starting at 22 vs 30 makes a massive difference.',
+    xpReward: 30,
+  },
+];
+
+// ===========================
+// MODULE 2 STAGE 3: Pick Your Vehicle (Quest)
+// ===========================
+export const INVESTMENT_QUEST_DATA = [
+  {
+    id: 'iq1',
+    question: "You want your money to be 100% safe. No risk at all.",
+    options: [
+      { id: 'fd', text: 'Fixed Deposit', correct: true },
+      { id: 'mf', text: 'Mutual Fund', correct: false },
+      { id: 'if', text: 'Index Fund', correct: false },
+    ],
+    explanation: "Fixed Deposits offer guaranteed returns. They are the 'bicycle' — very safe, but they barely beat inflation.",
+    explainer: 'laxmi',
+    xpReward: 50,
+  },
+  {
+    id: 'iq2',
+    question: "You want to start investing with just ₹500/month automatically.",
+    options: [
+      { id: 'fd', text: 'Fixed Deposit', correct: false },
+      { id: 'sip', text: 'SIP', correct: true },
+      { id: 'sa', text: 'Savings Account', correct: false },
+    ],
+    explanation: "SIP (Systematic Investment Plan) is perfect for small, regular investments without worrying about market timing.",
+    explainer: 'laxmi',
+    xpReward: 50,
+  },
+  {
+    id: 'iq3',
+    question: "You want long-term growth without picking individual stocks.",
+    options: [
+      { id: 'fd', text: 'Fixed Deposit', correct: false },
+      { id: 'mf', text: 'Mutual Fund', correct: false },
+      { id: 'if', text: 'Index Fund', correct: true },
+    ],
+    explanation: "Index Funds simply copy the market (like Nifty 50). They have low fees and often beat active experts in the long run. The 'self-driving car'!",
+    explainer: 'laxmi',
+    xpReward: 50,
+  },
+  {
+    id: 'iq4',
+    question: "You want experts to manage your money for potentially higher returns.",
+    options: [
+      { id: 'mf', text: 'Mutual Fund', correct: true },
+      { id: 'if', text: 'Index Fund', correct: false },
+      { id: 'sip', text: 'SIP', correct: false },
+    ],
+    explanation: "Mutual funds pool money from many investors, and professional fund managers decide where to invest it.",
+    explainer: 'laxmi',
+    xpReward: 50,
+  },
+  {
+    id: 'iq5',
+    question: "Iqbal says: just keep it in your savings account, it's safe!",
+    options: [
+      { id: 'sa', text: 'Keep in Savings', correct: false },
+      { id: 'inv', text: 'Invest it', correct: true },
+    ],
+    explanation: "Savings accounts give 3-4%, while I grow at 6%. Your 'safe' money is losing its purchasing power every day! Mwahaha!",
+    explainer: 'iqbal',
+    xpReward: 50,
+  },
+];
+
+
+// ===========================
+>>>>>>> Stashed changes
 // Stage metadata for skill tree
 // ===========================
 export const STAGES = [
@@ -421,7 +479,7 @@ export const STAGES = [
     id: 'stage-4',
     number: 1,
     title: 'The Sleeping Money',
-    subtitle: 'Meet Inflation Iqbal',
+    subtitle: 'Inflation Iqbal arrives',
     type: 'story',
     module: 2,
     lucideIcon: 'message-square',
@@ -431,24 +489,24 @@ export const STAGES = [
   {
     id: 'stage-5',
     number: 2,
-    title: 'The Money Talk',
-    subtitle: 'Socratic dialogue on investing',
-    type: 'quest',
+    title: 'Investment 101',
+    subtitle: 'Learn the vehicles',
+    type: 'cards',
     module: 2,
-    lucideIcon: 'message-circle-question',
-    xpReward: 280,
-    color: '#60A5FA',
+    lucideIcon: 'book-open',
+    xpReward: 150,
+    color: '#00D4FF',
   },
   {
     id: 'stage-6',
     number: 3,
-    title: 'Build Your Portfolio',
-    subtitle: 'Allocate your ₹8,000 savings',
-    type: 'minigame',
+    title: 'Pick Your Vehicle',
+    subtitle: 'Beat Inflation Iqbal',
+    type: 'quest',
     module: 2,
     lucideIcon: 'trending-up',
     xpReward: 250,
-    color: '#2563EB',
+    color: '#00E676',
   },
 ];
 
