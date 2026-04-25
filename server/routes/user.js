@@ -29,10 +29,19 @@ router.put('/progress', protect, async (req, res) => {
 
     if (xp !== undefined) user.xp = xp;
     if (badges) user.badges = badges;
-    if (completedStages) user.completedStages = completedStages;
-    if (activeStageByModule) user.activeStageByModule = activeStageByModule;
+    if (completedStages) {
+      user.completedStages = completedStages;
+      user.markModified('completedStages');
+    }
+    if (activeStageByModule) {
+      user.activeStageByModule = activeStageByModule;
+      user.markModified('activeStageByModule');
+    }
     if (hearts !== undefined) user.hearts = hearts;
-    if (completedQuests) user.completedQuests = completedQuests;
+    if (completedQuests) {
+      user.completedQuests = completedQuests;
+      user.markModified('completedQuests');
+    }
 
     await user.save();
     

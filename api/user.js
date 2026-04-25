@@ -46,10 +46,19 @@ export default async function handler(req, res) {
 
       if (xp !== undefined) userData.xp = xp;
       if (badges) userData.badges = badges;
-      if (completedStages) userData.completedStages = completedStages;
-      if (activeStageByModule) userData.activeStageByModule = activeStageByModule;
+      if (completedStages) {
+        userData.completedStages = completedStages;
+        userData.markModified('completedStages');
+      }
+      if (activeStageByModule) {
+        userData.activeStageByModule = activeStageByModule;
+        userData.markModified('activeStageByModule');
+      }
       if (hearts !== undefined) userData.hearts = hearts;
-      if (completedQuests) userData.completedQuests = completedQuests;
+      if (completedQuests) {
+        userData.completedQuests = completedQuests;
+        userData.markModified('completedQuests');
+      }
 
       await userData.save();
       
