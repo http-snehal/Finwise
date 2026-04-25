@@ -13,56 +13,22 @@ import Sidebar from '../components/Sidebar';
 import './Dashboard.css';
 
 export default function Dashboard() {
-  const { user, logout, badges, xp, playerName } = useGame();
+  const { user, logout, badges, xp, playerName, completedStages, setPlayerName } = useGame();
   const navigate = useNavigate();
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
-  const [editUsername, setEditUsername] = useState('');
+  const [editUsername, setEditUsername] = useState(playerName || '');
 
   useEffect(() => {
-    if (!user) {
-      navigate('/auth');
-      return;
-    }
+    if (!user) navigate('/auth');
+  }, [user, navigate]);
 
-    const fetchProfile = async () => {
-      try {
-        const res = await fetch('/api/user/profile', {
-          headers: { 'Authorization': `Bearer ${user.token}` }
-        });
-        const data = await res.json();
-        if (res.ok) {
-          setProfile(data);
-          setEditUsername(data.username || '');
-        } else {
-          logout();
-          navigate('/auth');
-        }
-      } catch (err) {
-        console.error('Failed to fetch profile', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  if (!user) return null;
 
-    fetchProfile();
-  }, [user, navigate, logout]);
-
-  if (loading) {
-    return (
-      <div className="dashboard-loading">
-        <div className="loading-spinner" />
-        <span>Loading your dashboard...</span>
-      </div>
-    );
-  }
-
-  const completedCount = profile?.completedStages?.length || 0;
+  const completedCount = completedStages?.length || 0;
   const totalStages = STAGES.length;
-  const progressPct = Math.round((completedCount / totalStages) * 100);
-  const userXp = profile?.xp ?? xp;
-  const userBadges = profile?.badges?.length > 0 ? profile.badges : badges;
+  const progressPct = totalStages > 0 ? Math.round((completedCount / totalStages) * 100) : 0;
+  const userXp = xp || 0;
+  const userBadges = badges || [];
   const level = Math.floor(userXp / 100) + 1;
   const xpToNext = 100 - (userXp % 100);
 
@@ -85,7 +51,7 @@ export default function Dashboard() {
         body: JSON.stringify({ username: editUsername })
       });
       if (res.ok) {
-        setProfile(prev => ({ ...prev, username: editUsername }));
+        setPlayerName(editUsername);
         setEditMode(false);
       }
     } catch (err) {
@@ -127,20 +93,20 @@ export default function Dashboard() {
                   <button className="wb-edit-btn save" onClick={handleSaveProfile}>
                     <Save size={14} />
                   </button>
-                  <button className="wb-edit-btn cancel" onClick={() => { setEditMode(false); setEditUsername(profile?.username || ''); }}>
+                  <button className="wb-edit-btn cancel" onClick={() => { setEditMode(false); setEditUsername(playerName || ''); }}>
                     <X size={14} />
                   </button>
                 </div>
               ) : (
                 <>
-                  <h1 className="wb-name">{profile?.username || playerName}</h1>
+                  <h1 className="wb-name">{playerName}</h1>
                   <button className="wb-edit-trigger" onClick={() => setEditMode(true)}>
                     <Pencil size={13} />
                   </button>
                 </>
               )}
             </div>
-            <p className="wb-email">{profile?.email}</p>
+            <p className="wb-email">{user?.email}</p>
           </div>
           <div className="wb-right">
             <div className="wb-level-badge">
@@ -202,7 +168,7 @@ export default function Dashboard() {
             </div>
             <div className="modules-list">
               {modules.map((mod) => {
-                const completed = mod.stages.filter(s => profile?.completedStages?.includes(s.id)).length;
+                const completed = mod.stages.filter(s => completedStages?.includes(s.id)).length;
                 const total = mod.stages.length;
                 const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
                 return (

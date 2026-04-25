@@ -2,29 +2,30 @@ import { createContext, useContext, useReducer, useCallback, useEffect, useRef }
 
 const GameContext = createContext(null);
 
+const savedUser = JSON.parse(localStorage.getItem('finwise_user')) || null;
+
 const initialState = {
   // Player stats
-  xp: 0,
-  hearts: 3,
+  xp: savedUser?.xp || 0,
+  hearts: savedUser?.hearts || 3,
   maxHearts: 3,
-  streak: 0,
-  longestStreak: 0,
+  streak: savedUser?.streak || 0,
+  longestStreak: savedUser?.longestStreak || 0,
   
   // Progress
   currentScene: 0,
   currentModule: 'payslip-101',
-  currentModule: 'payslip-101',
   completedScenes: [],
-  completedQuests: [],
-  completedStages: [],
-  activeStageByModule: { 1: 0, 2: 0 },
+  completedQuests: savedUser?.completedQuests || [],
+  completedStages: savedUser?.completedStages || [],
+  activeStageByModule: savedUser?.activeStageByModule || { 1: 0, 2: 0, 3: 0 },
   
   // Badges
-  badges: [],
+  badges: savedUser?.badges || [],
   
   // User info
-  user: JSON.parse(localStorage.getItem('finwise_user')) || null,
-  playerName: JSON.parse(localStorage.getItem('finwise_user'))?.username || 'Explorer',
+  user: savedUser,
+  playerName: savedUser?.username || 'Explorer',
   ctcAmount: 800000,
   
   // Salary breakdown (calculated)
@@ -299,6 +300,19 @@ export function GameProvider({ children }) {
     if (!state.user?.token) return;
     
     const syncTimeout = setTimeout(async () => {
+      // Update local storage so page reloads don't use stale data
+      const storedUser = JSON.parse(localStorage.getItem('finwise_user')) || {};
+      const updatedUser = {
+        ...storedUser,
+        xp: state.xp,
+        badges: state.badges,
+        completedStages: state.completedStages,
+        activeStageByModule: state.activeStageByModule,
+        hearts: state.hearts,
+        completedQuests: state.completedQuests
+      };
+      localStorage.setItem('finwise_user', JSON.stringify(updatedUser));
+
       try {
         await fetch('/api/user/progress', {
           method: 'PUT',
