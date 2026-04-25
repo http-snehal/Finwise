@@ -7,8 +7,8 @@ const initialState = {
   xp: 0,
   hearts: 3,
   maxHearts: 3,
-  streak: 1,
-  longestStreak: 1,
+  streak: 0,
+  longestStreak: 0,
   
   // Progress
   currentScene: 0,
@@ -146,6 +146,8 @@ function gameReducer(state, action) {
         ...state,
         user: null,
         xp: 0,
+        streak: 0,
+        longestStreak: 0,
         badges: [],
         playerName: 'Explorer',
         completedStages: [],

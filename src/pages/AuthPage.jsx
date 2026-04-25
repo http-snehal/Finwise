@@ -9,6 +9,7 @@ export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useGame();
 
@@ -19,6 +20,7 @@ export default function AuthPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     const url = isLogin ? '/api/auth/login' : '/api/auth/register';
     
@@ -40,6 +42,8 @@ export default function AuthPage() {
       navigate('/dashboard');
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -102,8 +106,9 @@ export default function AuthPage() {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary auth-submit">
-            {isLogin ? 'Login' : 'Create Account'} <ChevronRight size={18} />
+          <button type="submit" className="btn btn-primary auth-submit" disabled={loading}>
+            {loading ? (isLogin ? 'Logging in...' : 'Creating Account...') : (isLogin ? 'Login' : 'Create Account')} 
+            {!loading && <ChevronRight size={18} />}
           </button>
         </form>
 
