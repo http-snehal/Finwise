@@ -177,6 +177,18 @@ body::before {
   color: var(--text-bright);
 }
 
+/* — Layout Utilities — */
+.has-sidebar {
+  padding-left: 240px;
+  transition: padding 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  .has-sidebar {
+    padding-left: 80px;
+  }
+}
+
 /* — Utility Classes — */
 .glass {
   background: var(--bg-card);

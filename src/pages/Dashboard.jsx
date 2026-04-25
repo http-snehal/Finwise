@@ -5,6 +5,7 @@ import { useGame } from '../contexts/GameContext';
 import { Trophy, Zap, LogOut, CheckCircle2, LayoutDashboard } from 'lucide-react';
 import { STAGES } from '../data/storyData';
 import HUD from '../components/HUD';
+import Sidebar from '../components/Sidebar';
 import './Dashboard.css';
 
 export default function Dashboard() {
@@ -57,7 +58,8 @@ export default function Dashboard() {
   const progressPct = Math.round((completedCount / totalStages) * 100);
 
   return (
-    <div className="dashboard-page">
+    <div className="dashboard-page has-sidebar">
+      <Sidebar />
       <HUD />
       
       <div className="dashboard-container">
@@ -70,9 +72,7 @@ export default function Dashboard() {
             <LayoutDashboard size={24} className="neon-text" />
             <h1>Player Dashboard</h1>
           </div>
-          <button className="btn btn-ghost logout-btn" onClick={handleLogout}>
-            <LogOut size={16} /> Logout
-          </button>
+          {/* Logout removed here as it is in the sidebar */}
         </motion.div>
 
         <div className="dashboard-grid">

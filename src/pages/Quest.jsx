@@ -12,6 +12,7 @@ import BadgeUnlock from '../components/BadgeUnlock';
 import SocraticDialogue from '../components/SocraticDialogue';
 import PortfolioBuilder from '../components/PortfolioBuilder';
 import LearningCards from '../components/LearningCards';
+import Sidebar from '../components/Sidebar';
 import {
   STAGE_1_DIALOGUE,
   STAGE_4_DIALOGUE,
@@ -128,7 +129,8 @@ export default function Quest() {
   const stageTitle = getStageTitle();
 
   return (
-    <div className="quest-page">
+    <div className="quest-page has-sidebar">
+      <Sidebar />
       <HUD />
       <BadgeUnlock />
 

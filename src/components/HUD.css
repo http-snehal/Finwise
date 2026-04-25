@@ -3,19 +3,33 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  padding: 12px 20px;
-  background: var(--bg-surface);
-  border-bottom: 1px solid color-mix(in srgb, var(--neon-primary) 15%, transparent);
+  height: 52px;
+  padding-left: 240px; /* Account for sidebar */
+  background: color-mix(in srgb, var(--bg-surface) 60%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid color-mix(in srgb, var(--neon-primary) 10%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
+  transition: padding-left 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  .hud {
+    padding-left: 80px;
+  }
 }
 
 .hud-inner {
   max-width: 600px;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  padding: 0 20px;
 }
 
 .hud-stat {
