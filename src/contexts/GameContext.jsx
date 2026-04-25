@@ -351,11 +351,26 @@ export function GameProvider({ children }) {
   
   const completeQuest = useCallback((questId) => {
     dispatch({ type: 'COMPLETE_QUEST', payload: questId });
-  }, []);
+    syncToBackend({
+      completedQuests: [...new Set([...state.completedQuests, questId])]
+    });
+  }, [state.completedQuests, syncToBackend]);
   
   const completeStage = useCallback((payload) => {
     dispatch({ type: 'COMPLETE_STAGE', payload });
-  }, []);
+    const { stageId, mod, localIdx, moduleStagesCount } = payload;
+    const newCompleted = [...new Set([...state.completedStages, stageId])];
+    const currentActive = state.activeStageByModule[mod] ?? 0;
+    const newActive = currentActive === localIdx ? Math.min(currentActive + 1, moduleStagesCount) : currentActive;
+    
+    syncToBackend({
+      completedStages: newCompleted,
+      activeStageByModule: {
+        ...state.activeStageByModule,
+        [mod]: newActive
+      }
+    });
+  }, [state.completedStages, state.activeStageByModule, syncToBackend]);
   
   const value = {
     ...state,
