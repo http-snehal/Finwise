@@ -1,0 +1,88 @@
+.hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 12px 20px;
+  background: rgba(6, 11, 24, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+}
+
+.hud-inner {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.hud-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.hud-icon {
+  font-size: 1.1rem;
+}
+
+.hud-value {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-bright);
+}
+
+.hud-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: var(--font-display);
+}
+
+.hud-xp .hud-value {
+  color: var(--neon-primary);
+  text-shadow: 0 0 8px var(--neon-glow);
+}
+
+.xp-popup {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--neon-primary);
+  text-shadow: 0 0 10px var(--neon-glow-strong);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.heart {
+  font-size: 1.2rem;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.heart-empty {
+  opacity: 0.4;
+  filter: grayscale(1);
+}
+
+.streak-flame {
+  font-size: 1.2rem;
+  display: inline-block;
+  animation: streak-flame 1s ease-in-out infinite;
+}
+
+.hud-streak .hud-value {
+  color: var(--warning);
+  text-shadow: 0 0 8px rgba(255, 165, 2, 0.4);
+}

@@ -1,0 +1,109 @@
+.badge-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 11, 24, 0.92);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.badge-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  bottom: 40%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.badge-card {
+  position: relative;
+  background: linear-gradient(145deg, rgba(26, 43, 74, 0.9), rgba(12, 20, 37, 0.95));
+  border: 1px solid rgba(255, 184, 0, 0.3);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  text-align: center;
+  max-width: 380px;
+  width: 90%;
+  box-shadow: 
+    0 0 60px rgba(255, 184, 0, 0.15),
+    0 20px 60px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.badge-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 184, 0, 0.08) 0%, transparent 50%);
+  animation: pulse-gold 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.badge-header {
+  margin-bottom: 20px;
+}
+
+.badge-unlock-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--gold-primary);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px var(--gold-glow);
+}
+
+.badge-emoji-display {
+  font-size: 4rem;
+  margin: 16px 0;
+  filter: drop-shadow(0 0 20px rgba(255, 184, 0, 0.4));
+}
+
+.badge-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+}
+
+.badge-description {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.badge-xp-reward {
+  margin-bottom: 24px;
+}
+
+.badge-xp-amount {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--neon-primary);
+  text-shadow: 0 0 15px var(--neon-glow);
+  padding: 8px 20px;
+  background: rgba(0, 212, 255, 0.1);
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.badge-continue-btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 0.9rem;
+}

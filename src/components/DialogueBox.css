@@ -1,0 +1,245 @@
+.dialogue-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* SMS Notification */
+.sms-notification {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-neon);
+}
+
+.sms-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.sms-icon {
+  font-size: 1.2rem;
+}
+
+.sms-bank {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  flex: 1;
+}
+
+.sms-time {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.sms-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sms-amount {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--success);
+  text-shadow: 0 0 20px var(--success-glow);
+}
+
+.sms-detail {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Dialogue Box */
+.dialogue-box {
+  background: rgba(12, 20, 37, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 212, 255, 0.12);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dialogue-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-primary), transparent);
+  opacity: 0.5;
+}
+
+/* Portrait */
+.dialogue-portrait {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.portrait-frame {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--char-color, var(--neon-primary));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--char-color, var(--neon-primary)) 30%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  flex-shrink: 0;
+}
+
+.portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portrait-emoji {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portrait-name-badge {
+  display: flex;
+  flex-direction: column;
+}
+
+.portrait-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--char-color, var(--neon-primary));
+}
+
+.portrait-role {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Speech */
+.dialogue-speech {
+  min-height: 60px;
+  position: relative;
+}
+
+.dialogue-text {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+.typing-cursor {
+  color: var(--neon-primary);
+  animation: typewriter-blink 0.8s step-end infinite;
+  margin-left: 1px;
+  font-weight: 300;
+}
+
+.highlight-badge {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 20px;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(26, 86, 219, 0.15));
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--neon-primary);
+  text-shadow: 0 0 15px var(--neon-glow);
+}
+
+/* Advance */
+.dialogue-advance {
+  margin-top: 12px;
+  text-align: right;
+}
+
+.advance-indicator {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* Progress dots */
+.dialogue-progress {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.progress-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  transition: all 0.3s ease;
+}
+
+.progress-dot.active {
+  background: var(--neon-primary);
+  box-shadow: 0 0 8px var(--neon-glow);
+  transform: scale(1.4);
+}
+
+.progress-dot.completed {
+  background: rgba(0, 212, 255, 0.4);
+}
+
+/* Mood-specific styles */
+.mood-excited .dialogue-box {
+  border-color: rgba(0, 230, 118, 0.2);
+}
+
+.mood-confused .dialogue-box,
+.mood-anxious .dialogue-box {
+  border-color: rgba(255, 165, 2, 0.2);
+}
+
+.mood-villain-entry .dialogue-box {
+  border-color: rgba(255, 71, 87, 0.25);
+  box-shadow: 0 0 30px rgba(255, 71, 87, 0.08);
+}
+
+.mood-villain-entry .dialogue-box::before {
+  background: linear-gradient(90deg, transparent, #FF4757, transparent);
+}
+
+.mood-celebration .dialogue-box {
+  border-color: rgba(255, 184, 0, 0.3);
+  box-shadow: 0 0 30px rgba(255, 184, 0, 0.08);
+}
+
+.mood-celebration .dialogue-box::before {
+  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+}
