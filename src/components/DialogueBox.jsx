@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, Volume2, Landmark } from 'lucide-react';
+import { ChevronRight, Volume2, Landmark, BookOpen } from 'lucide-react';
 import { CHARACTERS } from '../data/storyData';
 import { playSound } from '../utils/audio';
 import './DialogueBox.css';
@@ -112,15 +112,42 @@ export default function DialogueBox({ dialogues, onComplete }) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Large Character Portrait */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`portrait-${current.character}`}
+          className="dialogue-character-portrait"
+          style={{ '--char-color': character.color }}
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.8, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {character.avatar ? (
+            <img
+              src={character.avatar}
+              alt={character.name}
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
+              }}
+            />
+          ) : null}
+          <div className="portrait-fallback" style={character.avatar ? { display: 'none' } : {}}>
+            <BookOpen size={48} />
+          </div>
+        </motion.div>
+      </AnimatePresence>
       
       {/* Bottom dialogue panel — Duolingo style */}
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
           className={`dialogue-bottom-panel mood-${moodClass}`}
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
+          exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
         >
           {/* Character row */}

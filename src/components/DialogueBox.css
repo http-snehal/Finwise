@@ -13,6 +13,42 @@
   z-index: 50;
   padding: 20px;
   gap: 20px;
+  background: radial-gradient(circle at 50% 60%, 
+    color-mix(in srgb, var(--bg-deep) 30%, transparent), 
+    color-mix(in srgb, var(--bg-deep) 85%, transparent));
+  backdrop-filter: blur(6px);
+}
+
+/* === Character Portrait (large, centered above dialogue) === */
+.dialogue-character-portrait {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--char-color, var(--neon-primary));
+  box-shadow: 
+    0 0 25px color-mix(in srgb, var(--char-color, var(--neon-primary)) 30%, transparent),
+    0 0 60px color-mix(in srgb, var(--char-color, var(--neon-primary)) 15%, transparent);
+  margin-bottom: -20px;
+  z-index: 2;
+  background: var(--bg-card);
+  flex-shrink: 0;
+}
+
+.dialogue-character-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dialogue-character-portrait .portrait-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--char-color, var(--neon-primary));
+  background: color-mix(in srgb, var(--char-color, var(--neon-primary)) 10%, var(--bg-card));
 }
 
 /* === SMS Notification === */
@@ -98,9 +134,9 @@
   width: 100%;
   max-width: 540px;
   background: var(--bg-card);
-  border: 1px solid color-mix(in srgb, var(--neon-primary) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--neon-primary) 20%, transparent);
   border-radius: var(--radius-lg) var(--radius-lg) var(--radius-md) var(--radius-md);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), 0 0 20px rgba(0, 0, 0, 0.05);
   padding: 18px 20px 14px;
   position: relative;
 }
@@ -117,7 +153,7 @@
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
-/* Character row */
+/* Character row (smaller inline version) */
 .dialogue-char-row {
   display: flex;
   align-items: center;
@@ -257,4 +293,12 @@
 }
 .mood-warm .dialogue-bottom-panel::before {
   background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+}
+
+/* Responsive: smaller portrait on mobile */
+@media (max-width: 600px) {
+  .dialogue-character-portrait {
+    width: 120px;
+    height: 120px;
+  }
 }
