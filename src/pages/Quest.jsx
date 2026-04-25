@@ -87,16 +87,8 @@ export default function Quest() {
       setShowConfetti(true);
     }
 
-    // Sync to backend (use updated values locally for the sync)
     const newCompleted = [...new Set([...completedStages, stageId])];
-    const currentActive = activeStageByModule[mod] ?? 0;
-    const newActive = currentActive === localIdx ? Math.min(currentActive + 1, moduleStagesCount) : currentActive;
     
-    syncToBackend({
-      completedStages: newCompleted,
-      activeStageByModule: { ...activeStageByModule, [mod]: newActive }
-    });
-
     // Check if this was the last stage across ALL modules
     const allStageIds = STAGES.map(s => s.id);
     const allDone = allStageIds.every(id => newCompleted.includes(id));

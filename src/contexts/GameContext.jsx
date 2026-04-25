@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useCallback } from 'react';
+import { createContext, useContext, useReducer, useCallback, useEffect, useRef } from 'react';
 
 const GameContext = createContext(null);
 
@@ -287,26 +287,47 @@ export function GameProvider({ children }) {
     dispatch({ type: 'LOGOUT' });
   }, []);
 
-  const syncToBackend = useCallback(async (updates) => {
-    if (!state.user?.token) return;
-    try {
-      await fetch('/api/user/progress', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${state.user.token}`
-        },
-        body: JSON.stringify(updates)
-      });
-    } catch (err) {
-      console.error('Failed to sync progress', err);
+  const isInitialMount = useRef(true);
+
+  // Auto-sync effect
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
     }
-  }, [state.user]);
+    
+    if (!state.user?.token) return;
+    
+    const syncTimeout = setTimeout(async () => {
+      try {
+        await fetch('/api/user/progress', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${state.user.token}`
+          },
+          body: JSON.stringify({
+            xp: state.xp,
+            badges: state.badges,
+            completedStages: state.completedStages,
+            activeStageByModule: state.activeStageByModule,
+            hearts: state.hearts,
+            completedQuests: state.completedQuests
+          })
+        });
+      } catch (err) {
+        console.error('Failed to sync progress', err);
+      }
+    }, 1500);
+
+    return () => clearTimeout(syncTimeout);
+  }, [state.xp, state.badges, state.completedStages, state.activeStageByModule, state.hearts, state.completedQuests, state.user]);
+
+  const syncToBackend = useCallback(() => {}, []);
 
   const addXp = useCallback((amount) => {
     dispatch({ type: 'ADD_XP', payload: amount });
-    syncToBackend({ xp: state.xp + amount });
-  }, [state.xp, syncToBackend]);
+  }, []);
   
   const loseHeart = useCallback(() => {
     dispatch({ type: 'LOSE_HEART' });
@@ -324,12 +345,8 @@ export function GameProvider({ children }) {
     const badge = BADGE_DEFINITIONS[badgeId];
     if (badge && !state.badges.find(b => b.id === badgeId)) {
       dispatch({ type: 'EARN_BADGE', payload: badgeId });
-      syncToBackend({ 
-        badges: [...state.badges, { ...badge, earnedAt: new Date().toISOString() }],
-        xp: state.xp + badge.xpReward 
-      });
     }
-  }, [state.badges, state.xp, syncToBackend]);
+  }, [state.badges]);
   
   const dismissBadge = useCallback(() => {
     dispatch({ type: 'DISMISS_BADGE' });
@@ -353,26 +370,11 @@ export function GameProvider({ children }) {
   
   const completeQuest = useCallback((questId) => {
     dispatch({ type: 'COMPLETE_QUEST', payload: questId });
-    syncToBackend({
-      completedQuests: [...new Set([...state.completedQuests, questId])]
-    });
-  }, [state.completedQuests, syncToBackend]);
+  }, []);
   
   const completeStage = useCallback((payload) => {
     dispatch({ type: 'COMPLETE_STAGE', payload });
-    const { stageId, mod, localIdx, moduleStagesCount } = payload;
-    const newCompleted = [...new Set([...state.completedStages, stageId])];
-    const currentActive = state.activeStageByModule[mod] ?? 0;
-    const newActive = currentActive === localIdx ? Math.min(currentActive + 1, moduleStagesCount) : currentActive;
-    
-    syncToBackend({
-      completedStages: newCompleted,
-      activeStageByModule: {
-        ...state.activeStageByModule,
-        [mod]: newActive
-      }
-    });
-  }, [state.completedStages, state.activeStageByModule, syncToBackend]);
+  }, []);
   
   const value = {
     ...state,

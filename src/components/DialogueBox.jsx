@@ -12,6 +12,7 @@ export default function DialogueBox({ dialogues, onComplete }) {
   const [showHighlight, setShowHighlight] = useState(false);
   const typingRef = useRef(null);
   const hasPlayedAudio = useRef(false);
+  const completedRef = useRef(false);
   
   const current = dialogues[currentIndex];
   const character = CHARACTERS[current?.character] || CHARACTERS.narrator;
@@ -63,7 +64,10 @@ export default function DialogueBox({ dialogues, onComplete }) {
     }
     
     if (isLast) {
-      onComplete?.();
+      if (!completedRef.current) {
+        completedRef.current = true;
+        onComplete?.();
+      }
     } else {
       setCurrentIndex(prev => prev + 1);
     }
