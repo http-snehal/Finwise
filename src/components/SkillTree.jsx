@@ -3,7 +3,7 @@ import { STAGES } from '../data/storyData';
 import {
   MessageCircleQuestion, TrendingUp, Search, PieChart,
   Lock, Check, ChevronRight, MessageSquare, BellRing,
-  PiggyBank
+  PiggyBank, BookOpen
 } from 'lucide-react';
 import './SkillTree.css';
 
@@ -15,6 +15,7 @@ const ICON_MAP = {
   'message-circle-question': MessageCircleQuestion,
   'trending-up': TrendingUp,
   'piggy-bank': PiggyBank,
+  'book-open': BookOpen,
 };
 
 const MODULE_INFO = {

@@ -20,7 +20,7 @@ router.get('/profile', protect, async (req, res) => {
 // Update progress
 router.put('/progress', protect, async (req, res) => {
   try {
-    const { xp, badges, completedStages, activeStageByModule } = req.body;
+    const { xp, badges, completedStages, activeStageByModule, hearts, completedQuests } = req.body;
     
     const user = await User.findById(req.user.id);
     if (!user) {
@@ -31,6 +31,8 @@ router.put('/progress', protect, async (req, res) => {
     if (badges) user.badges = badges;
     if (completedStages) user.completedStages = completedStages;
     if (activeStageByModule) user.activeStageByModule = activeStageByModule;
+    if (hearts !== undefined) user.hearts = hearts;
+    if (completedQuests) user.completedQuests = completedQuests;
 
     await user.save();
     
@@ -38,7 +40,9 @@ router.put('/progress', protect, async (req, res) => {
       xp: user.xp,
       badges: user.badges,
       completedStages: user.completedStages,
-      activeStageByModule: user.activeStageByModule
+      activeStageByModule: user.activeStageByModule,
+      hearts: user.hearts,
+      completedQuests: user.completedQuests
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

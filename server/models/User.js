@@ -22,14 +22,22 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  hearts: {
+    type: Number,
+    default: 3,
+  },
   badges: [{
     id: String,
+    name: String,
     earnedAt: {
       type: Date,
       default: Date.now,
     }
   }],
   completedStages: [{
+    type: String
+  }],
+  completedQuests: [{
     type: String
   }],
   activeStageByModule: {

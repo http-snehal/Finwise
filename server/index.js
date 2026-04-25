@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
+import gstRoutes from './routes/gst.js';
 import userRoutes from './routes/user.js';
 
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/gst', gstRoutes);
 app.use('/api/user', userRoutes);
 
 // Ignore browser default requests to prevent annoying console errors

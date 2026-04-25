@@ -110,6 +110,13 @@ const BADGE_DEFINITIONS = {
     lucideIcon: 'trending-up',
     xpReward: 300,
   },
+  'inflation-slayer': {
+    id: 'inflation-slayer',
+    name: 'Inflation Slayer',
+    description: 'Defeated Inflation Iqbal by choosing the right investments',
+    lucideIcon: 'shield',
+    xpReward: 300,
+  },
 };
 
 function gameReducer(state, action) {
