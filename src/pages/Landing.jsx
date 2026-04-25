@@ -193,6 +193,7 @@ function AnimatedStat({ value, label, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.15 }}
+      style={{ textAlign: 'center' }}
     >
       <span className="stat-number">{count}</span>
       <span className="stat-label">{label}</span>
@@ -251,20 +252,7 @@ export default function Landing() {
             The gamified way for India's first jobbers to decode taxes, master investments, and build real wealth.
           </motion.p>
 
-          {/* Character preview strip */}
-          <motion.div className="char-preview-strip" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
-            <span className="char-preview-label">Your guides on this journey</span>
-            <div className="char-preview-avatars">
-              {CHARACTERS.map(c => (
-                <div key={c.id} className="char-preview-item">
-                  <div className="char-preview-circle" style={{ borderColor: c.color }}>
-                    <img src={c.img} alt={c.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-                  </div>
-                  <span className="char-preview-name">{c.name.split(' ')[0]}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+
 
           <motion.div className="hero-cta-area" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
             <button className="btn btn-primary hero-cta glow-pulse" onClick={goStart} id="start-quest-btn">
