@@ -24,7 +24,7 @@ const initialState = {
   
   // User info
   user: JSON.parse(localStorage.getItem('finwise_user')) || null,
-  playerName: 'Explorer',
+  playerName: JSON.parse(localStorage.getItem('finwise_user'))?.username || 'Explorer',
   ctcAmount: 800000,
   
   // Salary breakdown (calculated)

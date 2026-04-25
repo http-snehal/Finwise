@@ -1,3 +1,18 @@
+Team samayak 
+team code: UDB-SM8K
+
+team lead :- Snehal Kushwah
+Members:- Rishabh Malviya , pavani jaiswal, naveshwar pathak 
+
+PS :- Financial Literacy Platform for First-Time Earners
+
+
+
+
+
+
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

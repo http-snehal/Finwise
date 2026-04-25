@@ -133,7 +133,10 @@ export default function Quest() {
   return (
     <div className="quest-page has-sidebar">
       <Sidebar />
-      <HUD />
+      <div className="quest-greeting-bar">
+        <span className="quest-greeting-text">Hey {playerName} 👋</span>
+        <span className="quest-greeting-sub">Ready to level up?</span>
+      </div>
       <BadgeUnlock />
 
       {/* Confetti */}
