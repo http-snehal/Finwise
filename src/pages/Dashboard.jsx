@@ -249,8 +249,8 @@ export default function Dashboard() {
               <h3>Completed Stages</h3>
             </div>
             <div className="dash-stages-list">
-              {profile?.completedStages?.length > 0 ? (
-                STAGES.filter(s => profile.completedStages.includes(s.id)).map((stage, i) => (
+              {completedStages?.length > 0 ? (
+                STAGES.filter(s => completedStages.includes(s.id)).map((stage, i) => (
                   <motion.div 
                     key={stage.id} 
                     className="dash-stage-item"
