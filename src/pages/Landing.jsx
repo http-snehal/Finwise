@@ -270,25 +270,9 @@ export default function Landing() {
         {/* Hero Visual */}
         <motion.div className="hero-visual" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5, duration: 0.8 }}>
           <div className="hero-card-stack">
-            <div className="hero-card hero-card-payslip">
-              <div className="hc-header">
-                <span className="hc-company">TechNova Solutions</span>
-                <span className="hc-month">Payslip · April 2026</span>
-              </div>
-              <div className="hc-row"><span>Basic Salary</span><span className="hc-earn">₹26,667</span></div>
-              <div className="hc-row"><span>HRA</span><span className="hc-earn">₹10,667</span></div>
-              <div className="hc-divider" />
-              <div className="hc-row"><span>EPF</span><span className="hc-deduct">-₹3,200</span></div>
-              <div className="hc-row"><span>TDS</span><span className="hc-deduct">-₹3,733</span></div>
-              <div className="hc-divider" />
-              <div className="hc-row hc-total"><span>Net Pay</span><span>₹52,000</span></div>
+            <div className="hero-card hero-card-logo glass">
+              <img src="/logo.png" alt="Finwise Logo" className="hero-logo-img" />
             </div>
-
-            <motion.div className="hero-card hero-card-badge" animate={{ rotate: [2, -2, 2] }} transition={{ duration: 4, repeat: Infinity }}>
-              <Trophy size={24} className="hcb-icon" />
-              <span className="hcb-text">Payslip Pro</span>
-              <div className="hcb-xp"><Zap size={12} /><span>+200 XP</span></div>
-            </motion.div>
           </div>
         </motion.div>
       </section>

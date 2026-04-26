@@ -237,78 +237,30 @@
   width: 320px;
 }
 
-.hero-card-payslip {
+.hero-card-logo {
   background: var(--bg-elevated);
   backdrop-filter: blur(10px);
   border: 1px solid var(--neon-glow-strong);
   border-radius: var(--radius-xl);
-  padding: 24px;
+  padding: 12px;
   box-shadow: var(--shadow-elevated);
   transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
-}
-
-.hc-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
 }
 
-.hc-company {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.85rem;
-  color: var(--text-bright);
+.hero-card-logo:hover {
+  transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-5px);
 }
 
-.hc-month {
-  font-size: 0.7rem;
-  color: var(--text-muted);
+.hero-logo-img {
+  width: 100%;
+  height: auto;
+  border-radius: calc(var(--radius-xl) - 8px);
+  object-fit: cover;
 }
-
-.hc-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-}
-
-.hc-earn { font-family: var(--font-mono); font-weight: 600; color: var(--success); }
-.hc-deduct { font-family: var(--font-mono); font-weight: 600; color: var(--danger); }
-.hc-divider { height: 1px; background: rgba(255, 255, 255, 0.05); margin: 8px 0; }
-
-.hc-total {
-  font-weight: 800;
-  color: var(--text-bright);
-  font-family: var(--font-mono);
-  font-size: 1rem;
-  padding-top: 12px;
-}
-
-.hero-card-badge {
-  position: absolute;
-  top: -20px;
-  right: -20px;
-  background: linear-gradient(135deg, rgba(255, 184, 0, 0.2), rgba(255, 150, 0, 0.05));
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 184, 0, 0.4);
-  border-radius: var(--radius-lg);
-  padding: 12px 16px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  z-index: 2;
-}
-
-.hcb-icon { color: var(--gold-primary); margin: 0 auto; }
-.hcb-text { font-family: var(--font-display); font-weight: 700; font-size: 0.75rem; color: var(--gold-primary); letter-spacing: 1px; }
-.hcb-xp { font-family: var(--font-mono); font-size: 0.7rem; color: var(--neon-primary); display: flex; align-items: center; justify-content: center; gap: 4px; }
 
 
 /* ── 2. Stats Bar ── */
