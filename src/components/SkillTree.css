@@ -124,6 +124,15 @@
   border-color: color-mix(in srgb, var(--module-accent, var(--neon-primary)) 20%, transparent);
 }
 
+.coming-soon-module {
+  border-color: rgba(255, 255, 255, 0.05);
+  background: color-mix(in srgb, var(--bg-card) 50%, transparent);
+}
+
+.coming-soon-module:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
 /* Module Header */
 .skill-tree-header {
   display: flex;

@@ -237,6 +237,24 @@ export default function SkillTree({ completedStages, activeStageByModule, onStag
           </motion.div>
         );
       })}
+
+      {/* Coming Soon Module */}
+      <motion.div 
+        className="skill-tree-module coming-soon-module"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+      >
+        <div className="skill-tree-header">
+          <div className="module-badge" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>
+            <Lock size={18} />
+          </div>
+          <div className="module-header-text">
+            <h2 className="skill-tree-title" style={{ color: 'var(--text-muted)' }}>More modules coming soon</h2>
+            <p className="skill-tree-subtitle">Investor II, Budgeting, Money Management</p>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }
